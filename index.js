@@ -39,7 +39,7 @@ db.connect((err) => {
 });
 
 app.get('/api/cases', (req, res) => {
-  db.query('SELECT * FROM cases ORDER BY created_at DESC', (err, results) => {
+ db.query('SELECT * FROM cases ORDER BY id DESC' , (err, results) => {
     if (err) return res.status(500).json({ error: err.message });
     res.json(results);
   });
