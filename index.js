@@ -34,6 +34,7 @@ const db = mysql.createConnection({
 db.connect((err) => {
   if (err) { console.error('DB 연결 실패:', err.message); return; }
   console.log('DB 연결 성공');
+
   db.query(`
     CREATE TABLE IF NOT EXISTS cases (
       id INT AUTO_INCREMENT PRIMARY KEY,
@@ -49,10 +50,18 @@ db.connect((err) => {
       memo TEXT,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )
-  `, (err) => {
-    if (err) console.error('테이블 생성 실패:', err.message);
-    else console.log('테이블 준비 완료');
-  });
+  `, (err) => { if (err) console.error('cases 테이블 오류:', err.message); });
+
+  db.query(`
+    CREATE TABLE IF NOT EXISTS staff (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      name VARCHAR(50) NOT NULL,
+      role VARCHAR(30),
+      phone VARCHAR(20),
+      email VARCHAR(100),
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )
+  `, (err) => { if (err) console.error('staff 테이블 오류:', err.message); else console.log('테이블 준비 완료'); });
 });
 
 app.post('/api/login', (req, res) => {
@@ -74,6 +83,7 @@ app.get('/api/me', (req, res) => {
   res.json({ loggedIn: !!(req.session && req.session.loggedIn) });
 });
 
+// 사건 API
 app.get('/api/cases', requireLogin, (req, res) => {
   db.query('SELECT * FROM cases ORDER BY id DESC', (err, results) => {
     if (err) return res.status(500).json({ error: err.message });
@@ -107,6 +117,45 @@ app.put('/api/cases/:id', requireLogin, (req, res) => {
 
 app.delete('/api/cases/:id', requireLogin, (req, res) => {
   db.query('DELETE FROM cases WHERE id=?', [req.params.id], (err) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.json({ ok: true });
+  });
+});
+
+// 직원 API
+app.get('/api/staff', requireLogin, (req, res) => {
+  db.query('SELECT * FROM staff ORDER BY id ASC', (err, results) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.json(results);
+  });
+});
+
+app.post('/api/staff', requireLogin, (req, res) => {
+  const { name, role, phone, email } = req.body;
+  db.query(
+    'INSERT INTO staff (name, role, phone, email) VALUES (?,?,?,?)',
+    [name, role, phone, email],
+    (err, result) => {
+      if (err) return res.status(500).json({ error: err.message });
+      res.json({ id: result.insertId });
+    }
+  );
+});
+
+app.put('/api/staff/:id', requireLogin, (req, res) => {
+  const { name, role, phone, email } = req.body;
+  db.query(
+    'UPDATE staff SET name=?, role=?, phone=?, email=? WHERE id=?',
+    [name, role, phone, email, req.params.id],
+    (err) => {
+      if (err) return res.status(500).json({ error: err.message });
+      res.json({ ok: true });
+    }
+  );
+});
+
+app.delete('/api/staff/:id', requireLogin, (req, res) => {
+  db.query('DELETE FROM staff WHERE id=?', [req.params.id], (err) => {
     if (err) return res.status(500).json({ error: err.message });
     res.json({ ok: true });
   });
