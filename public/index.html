@@ -2,130 +2,147 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>법무사무소 관리 시스템</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Noto Sans KR', sans-serif; }
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Noto Sans KR', sans-serif; -webkit-tap-highlight-color: transparent; }
 body { background: #f0f2f5; min-height: 100vh; }
 :root { --navy: #1e2d45; --gold: #c9a84c; --gold-light: #f0d080; }
-.login-wrap { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: var(--navy); }
-.login-box { background: #fff; border-radius: 16px; padding: 40px 36px; width: 360px; max-width: 95vw; }
+
+.login-wrap { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: var(--navy); padding: 16px; }
+.login-box { background: #fff; border-radius: 16px; padding: 40px 36px; width: 360px; max-width: 100%; }
 .login-logo { text-align: center; margin-bottom: 28px; }
 .login-logo .icon { width: 56px; height: 56px; background: var(--gold); border-radius: 12px; display: inline-flex; align-items: center; justify-content: center; font-size: 28px; margin-bottom: 12px; }
 .login-logo h2 { font-size: 18px; color: var(--navy); font-weight: 700; }
 .login-logo p { font-size: 12px; color: #aaa; margin-top: 4px; }
 .login-field { margin-bottom: 14px; }
 .login-field label { display: block; font-size: 12px; color: #666; font-weight: 600; margin-bottom: 6px; }
-.login-field input { width: 100%; border: 1.5px solid #ddd; border-radius: 8px; padding: 10px 14px; font-size: 14px; outline: none; }
+.login-field input { width: 100%; border: 1.5px solid #ddd; border-radius: 8px; padding: 12px 14px; font-size: 16px; outline: none; }
 .login-field input:focus { border-color: var(--gold); }
-.login-btn { width: 100%; background: var(--navy); color: var(--gold-light); border: none; border-radius: 8px; padding: 12px; font-size: 14px; font-weight: 700; cursor: pointer; margin-top: 8px; }
+.login-btn { width: 100%; background: var(--navy); color: var(--gold-light); border: none; border-radius: 8px; padding: 14px; font-size: 15px; font-weight: 700; cursor: pointer; margin-top: 8px; }
 .login-error { color: #E24B4A; font-size: 12px; text-align: center; margin-top: 10px; display: none; }
-.wrap { max-width: 1100px; margin: 0 auto; padding: 24px 16px; display: none; }
-.header { background: var(--navy); border-radius: 12px; padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
-.header-left { display: flex; align-items: center; gap: 14px; }
-.logo { width: 38px; height: 38px; background: var(--gold); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
-.header-title { color: #f5f0e8; font-size: 17px; font-weight: 700; }
-.header-sub { color: #a8b8cc; font-size: 12px; margin-top: 2px; }
-.header-right { display: flex; align-items: center; gap: 12px; }
-.date { border: 1px solid var(--gold); color: var(--gold-light); border-radius: 20px; padding: 4px 14px; font-size: 12px; }
-.logout-btn { background: none; border: 1px solid #a8b8cc; color: #a8b8cc; border-radius: 20px; padding: 4px 14px; font-size: 12px; cursor: pointer; }
-.logout-btn:hover { border-color: #E24B4A; color: #E24B4A; }
-.tabs { display: flex; gap: 4px; margin-bottom: 16px; background: #fff; border-radius: 10px; padding: 4px; border: 1px solid #e8e8e8; }
-.tab { flex: 1; padding: 8px; text-align: center; font-size: 13px; font-weight: 600; border-radius: 7px; cursor: pointer; color: #888; border: none; background: none; }
+
+.wrap { max-width: 1100px; margin: 0 auto; padding: 16px; display: none; }
+.header { background: var(--navy); border-radius: 12px; padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.header-left { display: flex; align-items: center; gap: 12px; }
+.logo { width: 36px; height: 36px; background: var(--gold); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+.header-title { color: #f5f0e8; font-size: 15px; font-weight: 700; }
+.header-sub { color: #a8b8cc; font-size: 11px; margin-top: 2px; }
+.header-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.date { border: 1px solid var(--gold); color: var(--gold-light); border-radius: 20px; padding: 4px 10px; font-size: 11px; white-space: nowrap; }
+.logout-btn { background: none; border: 1px solid #a8b8cc; color: #a8b8cc; border-radius: 20px; padding: 4px 10px; font-size: 11px; cursor: pointer; white-space: nowrap; }
+
+.tabs { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; margin-bottom: 12px; background: #fff; border-radius: 10px; padding: 4px; border: 1px solid #e8e8e8; }
+.tab { padding: 8px 4px; text-align: center; font-size: 11px; font-weight: 600; border-radius: 7px; cursor: pointer; color: #888; border: none; background: none; line-height: 1.3; }
 .tab.active { background: var(--navy); color: var(--gold-light); }
-.stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px; }
-.stat-card { background: #fff; border-radius: 10px; padding: 16px 18px; cursor: pointer; border: 1.5px solid #e8e8e8; transition: border-color 0.15s; }
+
+.stat-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 12px; }
+.stat-card { background: #fff; border-radius: 10px; padding: 14px 16px; cursor: pointer; border: 1.5px solid #e8e8e8; transition: border-color 0.15s; }
 .stat-card:hover { border-color: var(--gold); }
 .stat-card.danger { border-color: #ffcccc; background: #fff8f8; }
-.stat-label { font-size: 12px; color: #888; margin-bottom: 6px; }
-.stat-num { font-size: 28px; font-weight: 700; color: #1e2d45; }
+.stat-label { font-size: 11px; color: #888; margin-bottom: 6px; }
+.stat-num { font-size: 24px; font-weight: 700; color: #1e2d45; }
 .stat-num.gold { color: var(--gold); }
 .stat-num.red { color: #E24B4A; }
 .stat-num.green { color: #3B6D11; }
 .stat-desc { font-size: 11px; color: #aaa; margin-top: 4px; }
-.chart-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 12px; margin-bottom: 16px; }
-.chart-card { background: #fff; border-radius: 12px; padding: 20px; border: 1px solid #e8e8e8; }
-.chart-title { font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 16px; }
-.chart-wrap { position: relative; height: 220px; }
-.fee-overview { background: #fff; border-radius: 12px; padding: 20px; border: 1px solid #e8e8e8; margin-bottom: 16px; }
-.fee-overview-title { font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 16px; }
-.fee-bar-wrap { height: 20px; background: #f0f0f0; border-radius: 10px; overflow: hidden; display: flex; margin-bottom: 10px; }
+
+.chart-grid { display: grid; grid-template-columns: 1fr; gap: 12px; margin-bottom: 12px; }
+.chart-card { background: #fff; border-radius: 12px; padding: 16px; border: 1px solid #e8e8e8; }
+.chart-title { font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 12px; }
+.chart-wrap { position: relative; height: 200px; }
+
+.fee-overview { background: #fff; border-radius: 12px; padding: 16px; border: 1px solid #e8e8e8; margin-bottom: 12px; }
+.fee-overview-title { font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 12px; }
+.fee-bar-wrap { height: 18px; background: #f0f0f0; border-radius: 10px; overflow: hidden; display: flex; margin-bottom: 10px; }
 .fee-bar-paid { background: #3B6D11; height: 100%; transition: width 0.5s; }
 .fee-bar-partial { background: #c9a84c; height: 100%; transition: width 0.5s; }
 .fee-bar-unpaid { background: #E24B4A; height: 100%; transition: width 0.5s; }
-.fee-legend { display: flex; gap: 20px; font-size: 12px; }
+.fee-legend { display: flex; gap: 16px; font-size: 12px; flex-wrap: wrap; }
 .legend-item { display: flex; align-items: center; gap: 6px; }
-.legend-dot { width: 10px; height: 10px; border-radius: 50%; }
-.section-header { background: var(--navy); border-radius: 8px; padding: 10px 18px; color: #f5f0e8; font-size: 14px; font-weight: 600; margin-bottom: 10px; }
-.filter-row { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
-.filter-btn { background: #fff; border: 1.5px solid #ddd; border-radius: 20px; padding: 5px 16px; font-size: 13px; cursor: pointer; transition: all 0.15s; }
+.legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+.section-header { background: var(--navy); border-radius: 8px; padding: 10px 16px; color: #f5f0e8; font-size: 13px; font-weight: 600; margin-bottom: 10px; }
+.filter-row { display: flex; gap: 6px; margin-bottom: 10px; flex-wrap: wrap; }
+.filter-btn { background: #fff; border: 1.5px solid #ddd; border-radius: 20px; padding: 6px 14px; font-size: 12px; cursor: pointer; transition: all 0.15s; white-space: nowrap; }
 .filter-btn.active { background: var(--navy); color: var(--gold-light); border-color: var(--navy); }
-.table-wrap { background: #fff; border-radius: 12px; overflow: hidden; border: 1px solid #e8e8e8; margin-bottom: 16px; }
-table { width: 100%; border-collapse: collapse; }
+
+.table-wrap { background: #fff; border-radius: 12px; overflow-x: auto; border: 1px solid #e8e8e8; margin-bottom: 12px; -webkit-overflow-scrolling: touch; }
+table { width: 100%; border-collapse: collapse; min-width: 600px; }
 thead tr { background: #f7f8fa; }
-th { padding: 10px 16px; text-align: left; font-size: 12px; color: #888; border-bottom: 1px solid #eee; font-weight: 600; }
-td { padding: 11px 16px; font-size: 13px; border-bottom: 1px solid #f0f0f0; color: #222; }
+th { padding: 10px 12px; text-align: left; font-size: 11px; color: #888; border-bottom: 1px solid #eee; font-weight: 600; white-space: nowrap; }
+td { padding: 10px 12px; font-size: 12px; border-bottom: 1px solid #f0f0f0; color: #222; }
 tr:last-child td { border-bottom: none; }
 tr:hover td { background: #fafbfc; }
 tr.unpaid-row td { background: #fff8f8; }
-.badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; }
+
+.badge { display: inline-block; padding: 3px 8px; border-radius: 12px; font-size: 10px; font-weight: 600; white-space: nowrap; }
 .badge-prog { background: #E6F1FB; color: #185FA5; }
 .badge-done { background: #EAF3DE; color: #3B6D11; }
 .badge-wait { background: #FAEEDA; color: #854F0B; }
 .badge-paid { background: #EAF3DE; color: #3B6D11; }
 .badge-partial { background: #FAEEDA; color: #854F0B; }
 .badge-unpaid { background: #FDECEA; color: #A32D2D; }
-.avatar { width: 26px; height: 26px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; margin-right: 5px; vertical-align: middle; }
+
+.avatar { width: 24px; height: 24px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; margin-right: 4px; vertical-align: middle; flex-shrink: 0; }
 .av1{background:#1e2d45;color:#f0d080}.av2{background:#8B6914;color:#fdf3dc}.av3{background:#0F6E56;color:#9FE1CB}.av4{background:#A32D2D;color:#F7C1C1}.av5{background:#3C3489;color:#CECBF6}
-.bottom-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.mini-card { background: #fff; border-radius: 12px; padding: 16px 18px; border: 1px solid #e8e8e8; }
+
+.bottom-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+.mini-card { background: #fff; border-radius: 12px; padding: 16px; border: 1px solid #e8e8e8; }
 .mini-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; color: #1e2d45; }
-.deadline-item { display: flex; justify-content: space-between; padding: 7px 0; border-bottom: 1px solid #f0f0f0; font-size: 12px; }
+.deadline-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #f0f0f0; font-size: 12px; gap: 8px; }
 .deadline-item:last-child { border-bottom: none; }
-.urgent { color: #E24B4A; font-weight: 700; }
+.deadline-item span:first-child { flex: 1; }
+.urgent { color: #E24B4A; font-weight: 700; white-space: nowrap; }
 .bar-row { margin-bottom: 10px; }
 .bar-label { display: flex; justify-content: space-between; font-size: 12px; color: #666; margin-bottom: 4px; }
 .bar-track { height: 8px; background: #f0f0f0; border-radius: 4px; overflow: hidden; }
 .bar-fill { height: 100%; border-radius: 4px; }
-.add-btn { background: var(--gold); color: var(--navy); border: none; border-radius: 8px; padding: 8px 18px; font-size: 13px; font-weight: 700; cursor: pointer; margin-bottom: 12px; }
-.add-btn:hover { background: var(--gold-light); }
 
-/* 직원 카드 */
-.staff-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; margin-bottom: 16px; }
-.staff-card { background: #fff; border-radius: 12px; padding: 20px; border: 1px solid #e8e8e8; }
-.staff-avatar { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 700; margin-bottom: 12px; }
+.add-btn { background: var(--gold); color: var(--navy); border: none; border-radius: 8px; padding: 10px 18px; font-size: 13px; font-weight: 700; cursor: pointer; margin-bottom: 12px; min-height: 44px; }
+.add-btn:active { background: var(--gold-light); }
+
+.staff-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; margin-bottom: 12px; }
+.staff-card { background: #fff; border-radius: 12px; padding: 18px; border: 1px solid #e8e8e8; }
+.staff-avatar { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 700; margin-bottom: 12px; }
 .staff-name { font-size: 15px; font-weight: 700; color: var(--navy); }
-.staff-role { font-size: 12px; color: #888; margin-top: 3px; margin-bottom: 12px; }
+.staff-role { font-size: 12px; color: #888; margin-top: 3px; margin-bottom: 10px; }
 .staff-info { font-size: 12px; color: #666; line-height: 1.8; }
-.staff-actions { display: flex; gap: 8px; margin-top: 14px; }
-.staff-edit-btn { flex: 1; background: var(--navy); color: var(--gold-light); border: none; border-radius: 7px; padding: 7px; font-size: 12px; cursor: pointer; }
-.staff-del-btn { background: #fff; color: #E24B4A; border: 1px solid #E24B4A; border-radius: 7px; padding: 7px 12px; font-size: 12px; cursor: pointer; }
+.staff-actions { display: flex; gap: 8px; margin-top: 12px; }
+.staff-edit-btn { flex: 1; background: var(--navy); color: var(--gold-light); border: none; border-radius: 7px; padding: 8px; font-size: 12px; cursor: pointer; min-height: 36px; }
+.staff-del-btn { background: #fff; color: #E24B4A; border: 1px solid #E24B4A; border-radius: 7px; padding: 8px 12px; font-size: 12px; cursor: pointer; min-height: 36px; }
 .staff-cases { font-size: 11px; color: var(--gold); font-weight: 700; margin-top: 6px; }
 
-.modal-bg { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 100; align-items: center; justify-content: center; }
+.modal-bg { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 100; align-items: flex-end; justify-content: center; }
 .modal-bg.open { display: flex; }
-.modal { background: #fff; border-radius: 14px; padding: 28px; width: 480px; max-width: 95vw; max-height: 90vh; overflow-y: auto; }
-.modal h3 { font-size: 16px; color: var(--navy); margin-bottom: 20px; font-weight: 700; }
-.form-row { margin-bottom: 14px; }
+.modal { background: #fff; border-radius: 20px 20px 0 0; padding: 24px 20px; width: 100%; max-width: 560px; max-height: 90vh; overflow-y: auto; }
+.modal h3 { font-size: 16px; color: var(--navy); margin-bottom: 16px; font-weight: 700; }
+.form-row { margin-bottom: 12px; }
 .form-row label { display: block; font-size: 12px; color: #666; margin-bottom: 5px; font-weight: 600; }
-.form-row input, .form-row select, .form-row textarea { width: 100%; border: 1.5px solid #ddd; border-radius: 7px; padding: 8px 12px; font-size: 13px; outline: none; font-family: inherit; }
+.form-row input, .form-row select, .form-row textarea { width: 100%; border: 1.5px solid #ddd; border-radius: 8px; padding: 10px 12px; font-size: 16px; outline: none; font-family: inherit; -webkit-appearance: none; }
 .form-row input:focus, .form-row select:focus, .form-row textarea:focus { border-color: var(--gold); }
-.form-row textarea { resize: vertical; min-height: 70px; }
-.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.modal-btns { display: flex; gap: 8px; margin-top: 20px; }
-.btn-cancel { flex: 1; background: #f0f0f0; border: none; border-radius: 8px; padding: 10px; font-size: 13px; cursor: pointer; }
-.btn-save { flex: 2; background: var(--navy); color: var(--gold-light); border: none; border-radius: 8px; padding: 10px; font-size: 13px; font-weight: 700; cursor: pointer; }
-.action-btn { background: none; border: none; cursor: pointer; font-size: 15px; padding: 2px 4px; }
+.form-row textarea { resize: vertical; min-height: 80px; font-size: 14px; }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.modal-btns { display: flex; gap: 8px; margin-top: 16px; padding-bottom: 8px; }
+.btn-cancel { flex: 1; background: #f0f0f0; border: none; border-radius: 8px; padding: 12px; font-size: 14px; cursor: pointer; min-height: 44px; }
+.btn-save { flex: 2; background: var(--navy); color: var(--gold-light); border: none; border-radius: 8px; padding: 12px; font-size: 14px; font-weight: 700; cursor: pointer; min-height: 44px; }
+.action-btn { background: none; border: none; cursor: pointer; font-size: 16px; padding: 4px 6px; min-height: 32px; min-width: 32px; }
 .page { display: none; }
 .page.active { display: block; }
-@media (max-width: 768px) {
-  .stat-grid { grid-template-columns: repeat(2,1fr); }
-  .chart-grid { grid-template-columns: 1fr; }
-  .bottom-grid { grid-template-columns: 1fr; }
-  .form-grid { grid-template-columns: 1fr; }
-  .tabs { flex-wrap: wrap; }
-  .tab { font-size: 11px; padding: 6px 4px; }
+
+@media (min-width: 768px) {
+  .wrap { padding: 24px 16px; }
+  .stat-grid { grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .chart-grid { grid-template-columns: 2fr 1fr; }
+  .bottom-grid { grid-template-columns: 1fr 1fr; }
+  .form-grid { grid-template-columns: 1fr 1fr; }
+  .modal-bg { align-items: center; }
+  .modal { border-radius: 14px; padding: 28px; max-width: 480px; }
+  .tab { font-size: 13px; padding: 8px; }
+  .header-title { font-size: 17px; }
+  .header-sub { font-size: 12px; }
+  .date, .logout-btn { font-size: 12px; padding: 4px 14px; }
 }
 </style>
 </head>
@@ -158,11 +175,11 @@ tr.unpaid-row td { background: #fff8f8; }
   </div>
 
   <div class="tabs">
-    <button class="tab active" onclick="showPage('cases',this)">📋 사건 관리</button>
-    <button class="tab" onclick="showPage('fee',this)">💰 수임료</button>
-    <button class="tab" onclick="showPage('chart',this)">📊 매출 차트</button>
-    <button class="tab" onclick="showPage('staff',this)">👥 직원 관리</button>
-    <button class="tab" onclick="showPage('deadline',this)">📅 일정</button>
+    <button class="tab active" onclick="showPage('cases',this)">📋<br>사건</button>
+    <button class="tab" onclick="showPage('fee',this)">💰<br>수임료</button>
+    <button class="tab" onclick="showPage('chart',this)">📊<br>차트</button>
+    <button class="tab" onclick="showPage('staff',this)">👥<br>직원</button>
+    <button class="tab" onclick="showPage('deadline',this)">📅<br>일정</button>
   </div>
 
   <!-- 사건 관리 -->
@@ -182,7 +199,7 @@ tr.unpaid-row td { background: #fff8f8; }
     </div>
     <button class="add-btn" onclick="openModal()">+ 사건 추가</button>
     <div class="table-wrap">
-      <table><thead><tr><th>사건명</th><th>의뢰인</th><th>연락처</th><th>담당자</th><th>상태</th><th>수임료</th><th>수납</th><th>마감일</th><th>관리</th></tr></thead><tbody id="case-body"></tbody></table>
+      <table><thead><tr><th>사건명</th><th>의뢰인</th><th>담당자</th><th>상태</th><th>수임료</th><th>수납</th><th>마감일</th><th>관리</th></tr></thead><tbody id="case-body"></tbody></table>
     </div>
     <div class="bottom-grid">
       <div class="mini-card"><div class="mini-title">📅 마감 임박 사건</div><div id="deadline-list"></div></div>
@@ -208,19 +225,19 @@ tr.unpaid-row td { background: #fff8f8; }
       </div>
     </div>
     <div class="section-header">🔴 미수납 사건 목록</div>
-    <div class="table-wrap"><table><thead><tr><th>사건명</th><th>의뢰인</th><th>연락처</th><th>담당자</th><th>수임료</th><th>수납상태</th><th>관리</th></tr></thead><tbody id="unpaid-body"></tbody></table></div>
+    <div class="table-wrap"><table><thead><tr><th>사건명</th><th>의뢰인</th><th>담당자</th><th>수임료</th><th>수납</th><th>관리</th></tr></thead><tbody id="unpaid-body"></tbody></table></div>
   </div>
 
   <!-- 매출 차트 -->
   <div class="page" id="page-chart">
     <div class="stat-grid">
-      <div class="stat-card"><div class="stat-label">📅 이번 달 수임료</div><div class="stat-num gold" id="this-month-fee">0만</div><div class="stat-desc" id="this-month-cnt">0건</div></div>
-      <div class="stat-card"><div class="stat-label">📅 지난 달 수임료</div><div class="stat-num" id="last-month-fee">0만</div><div class="stat-desc" id="last-month-cnt">0건</div></div>
+      <div class="stat-card"><div class="stat-label">📅 이번 달</div><div class="stat-num gold" id="this-month-fee">0만</div><div class="stat-desc" id="this-month-cnt">0건</div></div>
+      <div class="stat-card"><div class="stat-label">📅 지난 달</div><div class="stat-num" id="last-month-fee">0만</div><div class="stat-desc" id="last-month-cnt">0건</div></div>
       <div class="stat-card"><div class="stat-label">📈 전월 대비</div><div class="stat-num" id="growth-rate">-</div><div class="stat-desc">증감률</div></div>
       <div class="stat-card"><div class="stat-label">🏆 최고 수임료</div><div class="stat-num gold" id="max-fee-case">0만</div><div class="stat-desc" id="max-fee-name">-</div></div>
     </div>
     <div class="chart-grid">
-      <div class="chart-card"><div class="chart-title">월별 수임료 현황 (최근 6개월)</div><div class="chart-wrap"><canvas id="monthlyChart"></canvas></div></div>
+      <div class="chart-card"><div class="chart-title">월별 수임료 (최근 6개월)</div><div class="chart-wrap"><canvas id="monthlyChart"></canvas></div></div>
       <div class="chart-card"><div class="chart-title">사건 유형별 분포</div><div class="chart-wrap"><canvas id="typeChart"></canvas></div></div>
     </div>
     <div class="chart-grid">
@@ -248,7 +265,7 @@ tr.unpaid-row td { background: #fff8f8; }
       <div class="stat-card"><div class="stat-label">🚨 D-7 이내</div><div class="stat-num red" id="d7-cnt">0</div><div class="stat-desc">긴급 마감</div></div>
       <div class="stat-card"><div class="stat-label">⚠️ D-30 이내</div><div class="stat-num gold" id="d30-cnt">0</div><div class="stat-desc">이번 달 마감</div></div>
       <div class="stat-card"><div class="stat-label">📋 마감 미설정</div><div class="stat-num" id="no-deadline-cnt">0</div><div class="stat-desc">기한 없는 사건</div></div>
-      <div class="stat-card"><div class="stat-label">✅ 완료 사건</div><div class="stat-num green" id="done-cnt2">0</div><div class="stat-desc">처리 완료</div></div>
+      <div class="stat-card"><div class="stat-label">✅ 완료</div><div class="stat-num green" id="done-cnt2">0</div><div class="stat-desc">처리 완료</div></div>
     </div>
     <div class="section-header">📅 전체 일정 현황</div>
     <div class="table-wrap"><table><thead><tr><th>사건명</th><th>의뢰인</th><th>담당자</th><th>상태</th><th>마감일</th><th>D-day</th><th>관리</th></tr></thead><tbody id="deadline-body"></tbody></table></div>
@@ -265,14 +282,14 @@ tr.unpaid-row td { background: #fff8f8; }
     </div>
     <div class="form-grid">
       <div class="form-row"><label>의뢰인 *</label><input id="f-client" placeholder="예: 홍길동"></div>
-      <div class="form-row"><label>연락처</label><input id="f-phone" placeholder="010-0000-0000"></div>
+      <div class="form-row"><label>연락처</label><input id="f-phone" placeholder="010-0000-0000" type="tel"></div>
     </div>
     <div class="form-grid">
       <div class="form-row"><label>담당자</label><select id="f-lawyer"><option value="">선택</option></select></div>
       <div class="form-row"><label>상태</label><select id="f-status"><option value="진행중">진행중</option><option value="완료">완료</option><option value="대기">대기</option></select></div>
     </div>
     <div class="form-grid">
-      <div class="form-row"><label>수임료 (만원)</label><input id="f-fee" type="number" placeholder="예: 50"></div>
+      <div class="form-row"><label>수임료 (만원)</label><input id="f-fee" type="number" placeholder="예: 50" inputmode="numeric"></div>
       <div class="form-row"><label>수납 여부</label><select id="f-paid"><option value="미수납">미수납</option><option value="일부수납">일부수납</option><option value="완납">완납</option></select></div>
     </div>
     <div class="form-row"><label>마감일</label><input id="f-deadline" type="date"></div>
@@ -293,17 +310,17 @@ tr.unpaid-row td { background: #fff8f8; }
       <div class="form-row"><label>직책</label><select id="sf-role">
         <option value="대표변호사">대표변호사</option>
         <option value="변호사">변호사</option>
-        <option value="사무장">사무장</option>
-        <option value="직원">직원</option>
-        <option value="인턴">인턴</option>
         <option value="본부장">본부장</option>
         <option value="과장">과장</option>
         <option value="사무장">사무장</option>
+        <option value="사무장">사무장</option>
+        <option value="직원">직원</option>
+        <option value="인턴">인턴</option>
       </select></div>
     </div>
     <div class="form-grid">
-      <div class="form-row"><label>연락처</label><input id="sf-phone" placeholder="010-0000-0000"></div>
-      <div class="form-row"><label>이메일</label><input id="sf-email" placeholder="example@law.com"></div>
+      <div class="form-row"><label>연락처</label><input id="sf-phone" placeholder="010-0000-0000" type="tel"></div>
+      <div class="form-row"><label>이메일</label><input id="sf-email" placeholder="example@law.com" type="email"></div>
     </div>
     <div class="modal-btns">
       <button class="btn-cancel" onclick="closeStaffModal()">취소</button>
@@ -313,339 +330,68 @@ tr.unpaid-row td { background: #fff8f8; }
 </div>
 
 <script>
-const API = '/api/cases';
-const STAFF_API = '/api/staff';
-let cases = [], staff = [];
-let currentFilter = 'all';
-let editId = null, editStaffId = null;
-const avColors = ['av1','av2','av3','av4','av5'];
-const avBgs = ['#1e2d45','#8B6914','#0F6E56','#A32D2D','#3C3489'];
-const avFgs = ['#f0d080','#fdf3dc','#9FE1CB','#F7C1C1','#CECBF6'];
-let charts = {};
+const API='/api/cases', STAFF_API='/api/staff';
+let cases=[],staff=[],currentFilter='all',editId=null,editStaffId=null;
+const avColors=['av1','av2','av3','av4','av5'];
+const avBgs=['#1e2d45','#8B6914','#0F6E56','#A32D2D','#3C3489'];
+const avFgs=['#f0d080','#fdf3dc','#9FE1CB','#F7C1C1','#CECBF6'];
+let charts={};
 
-function setDate() {
-  const d = new Date();
-  document.getElementById('today').textContent = `${d.getFullYear()}년 ${d.getMonth()+1}월 ${d.getDate()}일`;
-}
+function setDate(){const d=new Date();document.getElementById('today').textContent=`${d.getFullYear()}년 ${d.getMonth()+1}월 ${d.getDate()}일`;}
 
-async function checkLogin() {
-  const res = await fetch('/api/me');
-  const data = await res.json();
-  if (data.loggedIn) showDashboard();
-  else showLogin();
-}
+async function checkLogin(){const res=await fetch('/api/me');const data=await res.json();if(data.loggedIn)showDashboard();else showLogin();}
+function showLogin(){document.getElementById('login-wrap').style.display='flex';document.getElementById('dashboard').style.display='none';}
+async function showDashboard(){document.getElementById('login-wrap').style.display='none';document.getElementById('dashboard').style.display='block';await loadAll();}
+async function doLogin(){const id=document.getElementById('login-id').value,pw=document.getElementById('login-pw').value;const res=await fetch('/api/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id,password:pw})});if(res.ok){document.getElementById('login-error').style.display='none';showDashboard();}else document.getElementById('login-error').style.display='block';}
+async function doLogout(){await fetch('/api/logout',{method:'POST'});showLogin();}
 
-function showLogin() {
-  document.getElementById('login-wrap').style.display = 'flex';
-  document.getElementById('dashboard').style.display = 'none';
-}
+async function loadAll(){const[cr,sr]=await Promise.all([fetch(API),fetch(STAFF_API)]);if(cr.status===401){showLogin();return;}cases=await cr.json();staff=await sr.json();updateLawyerSelect();render();}
 
-async function showDashboard() {
-  document.getElementById('login-wrap').style.display = 'none';
-  document.getElementById('dashboard').style.display = 'block';
-  await loadAll();
-}
+function updateLawyerSelect(){const sel=document.getElementById('f-lawyer');const cur=sel.value;sel.innerHTML='<option value="">선택</option>';staff.forEach(s=>{const o=document.createElement('option');o.value=s.name+' '+s.role;o.textContent=s.name+' '+s.role;sel.appendChild(o);});sel.value=cur;}
 
-async function doLogin() {
-  const id = document.getElementById('login-id').value;
-  const pw = document.getElementById('login-pw').value;
-  const res = await fetch('/api/login', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id,password:pw})});
-  if (res.ok) { document.getElementById('login-error').style.display='none'; showDashboard(); }
-  else document.getElementById('login-error').style.display='block';
-}
+function showPage(name,btn){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.getElementById('page-'+name).classList.add('active');btn.classList.add('active');if(name==='chart')renderCharts();}
 
-async function doLogout() {
-  await fetch('/api/logout',{method:'POST'});
-  showLogin();
-}
+function render(){updateStats();renderTable();renderDeadlines();renderBars();renderFeeStats();renderUnpaid();renderDeadlineTable();renderStaff();}
 
-async function loadAll() {
-  const [cr, sr] = await Promise.all([fetch(API), fetch(STAFF_API)]);
-  if (cr.status===401) { showLogin(); return; }
-  cases = await cr.json();
-  staff = await sr.json();
-  updateLawyerSelect();
-  render();
-}
+function updateStats(){const total=cases.length,prog=cases.filter(c=>c.status==='진행중').length,done=cases.filter(c=>c.status==='완료').length,wait=cases.filter(c=>c.status==='대기').length,totalFee=cases.reduce((s,c)=>s+(c.fee||0),0),unpaidFee=cases.filter(c=>c.paid!=='완납').reduce((s,c)=>s+(c.fee||0),0);document.getElementById('cnt-all').textContent=total;document.getElementById('cnt-prog').textContent=prog;document.getElementById('cnt-done').textContent=done;document.getElementById('pct-prog').textContent=total?Math.round(prog/total*100)+'% 진행 비율':'-';document.getElementById('total-fee').textContent=totalFee+'만';document.getElementById('unpaid-fee').textContent='미수금: '+unpaidFee+'만원';document.getElementById('fb-all').textContent=total;document.getElementById('fb-prog').textContent=prog;document.getElementById('fb-done').textContent=done;document.getElementById('fb-wait').textContent=wait;}
 
-function updateLawyerSelect() {
-  const sel = document.getElementById('f-lawyer');
-  const current = sel.value;
-  sel.innerHTML = '<option value="">선택</option>';
-  staff.forEach(s => {
-    const opt = document.createElement('option');
-    opt.value = s.name + ' ' + s.role;
-    opt.textContent = s.name + ' ' + s.role;
-    sel.appendChild(opt);
-  });
-  sel.value = current;
-}
+function renderStaff(){const total=staff.length,lawyers=staff.filter(s=>s.role.includes('변호사')).length,avg=total>0?Math.round(cases.length/total*10)/10:0;document.getElementById('staff-total').textContent=total;document.getElementById('staff-lawyer').textContent=lawyers;document.getElementById('staff-staff').textContent=total-lawyers;document.getElementById('staff-avg').textContent=avg;const grid=document.getElementById('staff-grid');if(!staff.length){grid.innerHTML='<div style="color:#aaa;padding:24px">등록된 직원이 없습니다</div>';return;}grid.innerHTML=staff.map((s,i)=>{const cnt=cases.filter(c=>c.lawyer&&c.lawyer.includes(s.name)).length;return`<div class="staff-card"><div class="staff-avatar" style="background:${avBgs[i%5]};color:${avFgs[i%5]}">${s.name[0]}</div><div class="staff-name">${s.name}</div><div class="staff-role">${s.role}</div><div class="staff-info">📞 ${s.phone||'-'}<br>✉️ ${s.email||'-'}</div><div class="staff-cases">담당 사건 ${cnt}건</div><div class="staff-actions"><button class="staff-edit-btn" onclick="openStaffEdit(${s.id})">수정</button><button class="staff-del-btn" onclick="deleteStaff(${s.id})">삭제</button></div></div>`;}).join('');}
 
-function showPage(name, btn) {
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  document.getElementById('page-'+name).classList.add('active');
-  btn.classList.add('active');
-  if (name==='chart') renderCharts();
-}
+function renderCharts(){const now=new Date(),months=[],monthFees=[];for(let i=5;i>=0;i--){const d=new Date(now.getFullYear(),now.getMonth()-i,1);months.push(`${d.getMonth()+1}월`);monthFees.push(cases.filter(c=>{if(!c.created_at)return false;const cd=new Date(c.created_at);return cd.getFullYear()===d.getFullYear()&&cd.getMonth()===d.getMonth();}).reduce((s,c)=>s+(c.fee||0),0));}const thisMonth=monthFees[5],lastMonth=monthFees[4],growth=lastMonth>0?Math.round((thisMonth-lastMonth)/lastMonth*100):0,maxCase=cases.reduce((a,b)=>(a.fee||0)>(b.fee||0)?a:b,{});document.getElementById('this-month-fee').textContent=thisMonth+'만';document.getElementById('this-month-cnt').textContent=cases.filter(c=>{if(!c.created_at)return false;const d=new Date(c.created_at);return d.getFullYear()===now.getFullYear()&&d.getMonth()===now.getMonth();}).length+'건';document.getElementById('last-month-fee').textContent=lastMonth+'만';document.getElementById('last-month-cnt').textContent=cases.filter(c=>{if(!c.created_at)return false;const d=new Date(c.created_at);const lm=new Date(now.getFullYear(),now.getMonth()-1,1);return d.getFullYear()===lm.getFullYear()&&d.getMonth()===lm.getMonth();}).length+'건';const gr=document.getElementById('growth-rate');gr.textContent=(growth>=0?'+':'')+growth+'%';gr.className='stat-num '+(growth>=0?'green':'red');document.getElementById('max-fee-case').textContent=(maxCase.fee||0)+'만';document.getElementById('max-fee-name').textContent=maxCase.name||'-';if(charts.monthly)charts.monthly.destroy();charts.monthly=new Chart(document.getElementById('monthlyChart'),{type:'bar',data:{labels:months,datasets:[{label:'수임료(만원)',data:monthFees,backgroundColor:'#1e2d45',borderRadius:6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true}}}});const typeCounts={};cases.forEach(c=>{const t=c.case_type||'미분류';typeCounts[t]=(typeCounts[t]||0)+1;});if(charts.type)charts.type.destroy();charts.type=new Chart(document.getElementById('typeChart'),{type:'doughnut',data:{labels:Object.keys(typeCounts),datasets:[{data:Object.values(typeCounts),backgroundColor:['#1e2d45','#c9a84c','#0F6E56','#A32D2D','#3C3489','#888']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}}}}});const lawyerFees={};cases.forEach(c=>{if(c.lawyer)lawyerFees[c.lawyer]=(lawyerFees[c.lawyer]||0)+(c.fee||0);});if(charts.lawyer)charts.lawyer.destroy();charts.lawyer=new Chart(document.getElementById('lawyerChart'),{type:'bar',data:{labels:Object.keys(lawyerFees),datasets:[{label:'수임료(만원)',data:Object.values(lawyerFees),backgroundColor:['#1e2d45','#c9a84c','#0F6E56','#A32D2D','#3C3489'],borderRadius:6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true}}}});const statusCounts={'진행중':0,'완료':0,'대기':0};cases.forEach(c=>{if(statusCounts[c.status]!==undefined)statusCounts[c.status]++;});if(charts.status)charts.status.destroy();charts.status=new Chart(document.getElementById('statusChart'),{type:'doughnut',data:{labels:['진행중','완료','대기'],datasets:[{data:Object.values(statusCounts),backgroundColor:['#185FA5','#3B6D11','#854F0B']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}}}}});}
 
-function render() {
-  updateStats();
-  renderTable();
-  renderDeadlines();
-  renderBars();
-  renderFeeStats();
-  renderUnpaid();
-  renderDeadlineTable();
-  renderStaff();
-}
+function renderFeeStats(){const total=cases.reduce((s,c)=>s+(c.fee||0),0),paid=cases.filter(c=>c.paid==='완납').reduce((s,c)=>s+(c.fee||0),0),partial=cases.filter(c=>c.paid==='일부수납').reduce((s,c)=>s+(c.fee||0),0),unpaid=cases.filter(c=>c.paid==='미수납').reduce((s,c)=>s+(c.fee||0),0);document.getElementById('fee-total').textContent=total+'만';document.getElementById('fee-paid').textContent=paid+'만';document.getElementById('fee-partial').textContent=partial+'만';document.getElementById('fee-unpaid').textContent=unpaid+'만';document.getElementById('fee-paid-pct').textContent=total?'수납률 '+Math.round(paid/total*100)+'%':'수납률 0%';document.getElementById('fee-partial-cnt').textContent=cases.filter(c=>c.paid==='일부수납').length+'건';document.getElementById('fee-unpaid-cnt').textContent=cases.filter(c=>c.paid==='미수납').length+'건';if(total>0){document.getElementById('bar-paid').style.width=Math.round(paid/total*100)+'%';document.getElementById('bar-partial').style.width=Math.round(partial/total*100)+'%';document.getElementById('bar-unpaid').style.width=Math.round(unpaid/total*100)+'%';}}
 
-function updateStats() {
-  const total=cases.length, prog=cases.filter(c=>c.status==='진행중').length, done=cases.filter(c=>c.status==='완료').length, wait=cases.filter(c=>c.status==='대기').length;
-  const totalFee=cases.reduce((s,c)=>s+(c.fee||0),0), unpaidFee=cases.filter(c=>c.paid!=='완납').reduce((s,c)=>s+(c.fee||0),0);
-  document.getElementById('cnt-all').textContent=total;
-  document.getElementById('cnt-prog').textContent=prog;
-  document.getElementById('cnt-done').textContent=done;
-  document.getElementById('pct-prog').textContent=total?Math.round(prog/total*100)+'% 진행 비율':'-';
-  document.getElementById('total-fee').textContent=totalFee+'만';
-  document.getElementById('unpaid-fee').textContent='미수금: '+unpaidFee+'만원';
-  document.getElementById('fb-all').textContent=total;
-  document.getElementById('fb-prog').textContent=prog;
-  document.getElementById('fb-done').textContent=done;
-  document.getElementById('fb-wait').textContent=wait;
-}
+function renderUnpaid(){const unpaid=cases.filter(c=>c.paid!=='완납');const tbody=document.getElementById('unpaid-body');if(!unpaid.length){tbody.innerHTML='<tr><td colspan="6" style="text-align:center;padding:24px;color:#aaa">미수납 사건 없음 🎉</td></tr>';return;}tbody.innerHTML=unpaid.map((c,i)=>`<tr class="unpaid-row"><td><strong>${c.name}</strong></td><td>${c.client||'-'}</td><td><span class="avatar ${avColors[i%5]}">${(c.lawyer||'?')[0]}</span>${c.lawyer||'-'}</td><td><strong>${c.fee||0}만원</strong></td><td><span class="badge ${c.paid==='일부수납'?'badge-partial':'badge-unpaid'}">${c.paid||'미수납'}</span></td><td><button class="action-btn" onclick="openEdit(${c.id})">✏️</button></td></tr>`).join('');}
 
-function renderStaff() {
-  const total = staff.length;
-  const lawyers = staff.filter(s=>s.role.includes('변호사')).length;
-  const others = total - lawyers;
-  const avg = total > 0 ? Math.round(cases.length/total*10)/10 : 0;
-  document.getElementById('staff-total').textContent = total;
-  document.getElementById('staff-lawyer').textContent = lawyers;
-  document.getElementById('staff-staff').textContent = others;
-  document.getElementById('staff-avg').textContent = avg;
+function renderDeadlineTable(){const today=new Date();const allSorted=cases.map(c=>({...c,diff:c.deadline?Math.ceil((new Date(c.deadline)-today)/86400000):9999})).sort((a,b)=>a.diff-b.diff);document.getElementById('d7-cnt').textContent=allSorted.filter(c=>c.diff<=7&&c.diff>=0&&c.status!=='완료').length;document.getElementById('d30-cnt').textContent=allSorted.filter(c=>c.diff<=30&&c.diff>=0&&c.status!=='완료').length;document.getElementById('no-deadline-cnt').textContent=cases.filter(c=>!c.deadline&&c.status!=='완료').length;document.getElementById('done-cnt2').textContent=cases.filter(c=>c.status==='완료').length;const tbody=document.getElementById('deadline-body');if(!cases.length){tbody.innerHTML='<tr><td colspan="7" style="text-align:center;padding:24px;color:#aaa">사건이 없습니다</td></tr>';return;}tbody.innerHTML=allSorted.map((c,i)=>{const badge=c.status==='완료'?'badge-done':c.status==='진행중'?'badge-prog':'badge-wait';const dl=c.deadline?c.deadline.substring(0,10):'-';let dday='-',ddayStyle='color:#888';if(c.deadline&&c.diff!==9999){if(c.diff<0){dday='만료';ddayStyle='color:#aaa';}else if(c.diff===0){dday='D-DAY';ddayStyle='color:#E24B4A;font-weight:700';}else if(c.diff<=7){dday='D-'+c.diff;ddayStyle='color:#E24B4A;font-weight:700';}else if(c.diff<=30){dday='D-'+c.diff;ddayStyle='color:#854F0B;font-weight:600';}else{dday='D-'+c.diff;}}return`<tr><td><strong>${c.name}</strong></td><td>${c.client||'-'}</td><td><span class="avatar ${avColors[i%5]}">${(c.lawyer||'?')[0]}</span>${c.lawyer||'-'}</td><td><span class="badge ${badge}">${c.status}</span></td><td style="font-size:12px;color:#888">${dl}</td><td style="${ddayStyle}">${dday}</td><td><button class="action-btn" onclick="openEdit(${c.id})">✏️</button><button class="action-btn" onclick="deleteCase(${c.id})">🗑</button></td></tr>`;}).join('');}
 
-  const grid = document.getElementById('staff-grid');
-  if (!staff.length) { grid.innerHTML='<div style="color:#aaa;padding:24px">등록된 직원이 없습니다. 직원을 추가해보세요!</div>'; return; }
-  grid.innerHTML = staff.map((s,i) => {
-    const caseCnt = cases.filter(c=>c.lawyer&&c.lawyer.includes(s.name)).length;
-    return `<div class="staff-card">
-      <div class="staff-avatar" style="background:${avBgs[i%5]};color:${avFgs[i%5]}">${s.name[0]}</div>
-      <div class="staff-name">${s.name}</div>
-      <div class="staff-role">${s.role}</div>
-      <div class="staff-info">
-        📞 ${s.phone||'-'}<br>
-        ✉️ ${s.email||'-'}
-      </div>
-      <div class="staff-cases">담당 사건 ${caseCnt}건</div>
-      <div class="staff-actions">
-        <button class="staff-edit-btn" onclick="openStaffEdit(${s.id})">수정</button>
-        <button class="staff-del-btn" onclick="deleteStaff(${s.id})">삭제</button>
-      </div>
-    </div>`;
-  }).join('');
-}
+function renderTable(){const filtered=currentFilter==='all'?cases:cases.filter(c=>c.status===currentFilter);const tbody=document.getElementById('case-body');if(!filtered.length){tbody.innerHTML='<tr><td colspan="8" style="text-align:center;padding:24px;color:#aaa">사건이 없습니다</td></tr>';return;}tbody.innerHTML=filtered.map((c,i)=>{const badge=c.status==='완료'?'badge-done':c.status==='진행중'?'badge-prog':'badge-wait';const pb=c.paid==='완납'?'badge-paid':c.paid==='일부수납'?'badge-partial':'badge-unpaid';const dl=c.deadline?c.deadline.substring(0,10):'-';return`<tr ${c.paid==='미수납'?'class="unpaid-row"':''}><td><strong>${c.name}</strong>${c.case_type?`<br><span style="font-size:10px;color:#aaa">${c.case_type}</span>`:''}</td><td>${c.client||'-'}</td><td><span class="avatar ${avColors[i%5]}">${(c.lawyer||'?')[0]}</span>${c.lawyer||'-'}</td><td><span class="badge ${badge}">${c.status}</span></td><td>${c.fee||0}만</td><td><span class="badge ${pb}">${c.paid||'미수납'}</span></td><td style="color:#888;font-size:11px">${dl}</td><td><button class="action-btn" onclick="openEdit(${c.id})">✏️</button><button class="action-btn" onclick="deleteCase(${c.id})">🗑</button></td></tr>`;}).join('');}
 
-function renderCharts() {
-  const now = new Date();
-  const months = [], monthFees = [];
-  for (let i=5;i>=0;i--) {
-    const d = new Date(now.getFullYear(),now.getMonth()-i,1);
-    months.push(`${d.getMonth()+1}월`);
-    monthFees.push(cases.filter(c=>{if(!c.created_at)return false;const cd=new Date(c.created_at);return cd.getFullYear()===d.getFullYear()&&cd.getMonth()===d.getMonth();}).reduce((s,c)=>s+(c.fee||0),0));
-  }
-  const thisMonth=monthFees[5], lastMonth=monthFees[4];
-  const growth=lastMonth>0?Math.round((thisMonth-lastMonth)/lastMonth*100):0;
-  const maxCase=cases.reduce((a,b)=>(a.fee||0)>(b.fee||0)?a:b,{});
-  document.getElementById('this-month-fee').textContent=thisMonth+'만';
-  document.getElementById('this-month-cnt').textContent=cases.filter(c=>{if(!c.created_at)return false;const d=new Date(c.created_at);return d.getFullYear()===now.getFullYear()&&d.getMonth()===now.getMonth();}).length+'건';
-  document.getElementById('last-month-fee').textContent=lastMonth+'만';
-  document.getElementById('last-month-cnt').textContent=cases.filter(c=>{if(!c.created_at)return false;const d=new Date(c.created_at);const lm=new Date(now.getFullYear(),now.getMonth()-1,1);return d.getFullYear()===lm.getFullYear()&&d.getMonth()===lm.getMonth();}).length+'건';
-  const gr=document.getElementById('growth-rate');
-  gr.textContent=(growth>=0?'+':'')+growth+'%';
-  gr.className='stat-num '+(growth>=0?'green':'red');
-  document.getElementById('max-fee-case').textContent=(maxCase.fee||0)+'만';
-  document.getElementById('max-fee-name').textContent=maxCase.name||'-';
+function renderDeadlines(){const today=new Date();const upcoming=cases.filter(c=>c.deadline&&c.status!=='완료').map(c=>({...c,diff:Math.ceil((new Date(c.deadline)-today)/86400000)})).filter(c=>c.diff>=0).sort((a,b)=>a.diff-b.diff).slice(0,5);const el=document.getElementById('deadline-list');if(!upcoming.length){el.innerHTML='<div style="color:#aaa;font-size:12px;padding:8px 0">마감 임박 사건 없음</div>';return;}el.innerHTML=upcoming.map(c=>`<div class="deadline-item"><span>${c.name}</span><span class="${c.diff<=7?'urgent':''}" style="${c.diff>7?'color:#888':''}">D-${c.diff}</span></div>`).join('');}
 
-  if(charts.monthly)charts.monthly.destroy();
-  charts.monthly=new Chart(document.getElementById('monthlyChart'),{type:'bar',data:{labels:months,datasets:[{label:'수임료(만원)',data:monthFees,backgroundColor:'#1e2d45',borderRadius:6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true}}}});
+function renderBars(){const counts={};cases.forEach(c=>{if(c.lawyer)counts[c.lawyer]=(counts[c.lawyer]||0)+1;});const max=Math.max(...Object.values(counts),1);const colors=['#1e2d45','#c9a84c','#0F6E56','#A32D2D','#3C3489'];const el=document.getElementById('lawyer-bars');if(!Object.keys(counts).length){el.innerHTML='<div style="color:#aaa;font-size:12px">데이터 없음</div>';return;}el.innerHTML=Object.entries(counts).map(([name,n],i)=>`<div class="bar-row"><div class="bar-label"><span>${name}</span><span>${n}건</span></div><div class="bar-track"><div class="bar-fill" style="width:${Math.round(n/max*100)}%;background:${colors[i%5]}"></div></div></div>`).join('');}
 
-  const typeCounts={};
-  cases.forEach(c=>{const t=c.case_type||'미분류';typeCounts[t]=(typeCounts[t]||0)+1;});
-  if(charts.type)charts.type.destroy();
-  charts.type=new Chart(document.getElementById('typeChart'),{type:'doughnut',data:{labels:Object.keys(typeCounts),datasets:[{data:Object.values(typeCounts),backgroundColor:['#1e2d45','#c9a84c','#0F6E56','#A32D2D','#3C3489','#888']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}}}}});
+function filterCases(f){currentFilter=f;document.querySelectorAll('.filter-btn').forEach((btn,i)=>{btn.classList.toggle('active',['all','진행중','완료','대기'][i]===f);});renderTable();}
 
-  const lawyerFees={};
-  cases.forEach(c=>{if(c.lawyer)lawyerFees[c.lawyer]=(lawyerFees[c.lawyer]||0)+(c.fee||0);});
-  if(charts.lawyer)charts.lawyer.destroy();
-  charts.lawyer=new Chart(document.getElementById('lawyerChart'),{type:'bar',data:{labels:Object.keys(lawyerFees),datasets:[{label:'수임료(만원)',data:Object.values(lawyerFees),backgroundColor:['#1e2d45','#c9a84c','#0F6E56','#A32D2D','#3C3489'],borderRadius:6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true}}}});
+function openModal(){editId=null;document.getElementById('modal-title').textContent='사건 추가';['f-name','f-client','f-phone','f-memo'].forEach(id=>document.getElementById(id).value='');document.getElementById('f-fee').value='';document.getElementById('f-deadline').value='';document.getElementById('f-status').value='진행중';document.getElementById('f-paid').value='미수납';document.getElementById('f-type').value='';document.getElementById('f-lawyer').value='';document.getElementById('modal').classList.add('open');}
 
-  const statusCounts={'진행중':0,'완료':0,'대기':0};
-  cases.forEach(c=>{if(statusCounts[c.status]!==undefined)statusCounts[c.status]++;});
-  if(charts.status)charts.status.destroy();
-  charts.status=new Chart(document.getElementById('statusChart'),{type:'doughnut',data:{labels:['진행중','완료','대기'],datasets:[{data:Object.values(statusCounts),backgroundColor:['#185FA5','#3B6D11','#854F0B']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}}}}});
-}
-
-function renderFeeStats() {
-  const total=cases.reduce((s,c)=>s+(c.fee||0),0);
-  const paid=cases.filter(c=>c.paid==='완납').reduce((s,c)=>s+(c.fee||0),0);
-  const partial=cases.filter(c=>c.paid==='일부수납').reduce((s,c)=>s+(c.fee||0),0);
-  const unpaid=cases.filter(c=>c.paid==='미수납').reduce((s,c)=>s+(c.fee||0),0);
-  document.getElementById('fee-total').textContent=total+'만';
-  document.getElementById('fee-paid').textContent=paid+'만';
-  document.getElementById('fee-partial').textContent=partial+'만';
-  document.getElementById('fee-unpaid').textContent=unpaid+'만';
-  document.getElementById('fee-paid-pct').textContent=total?'수납률 '+Math.round(paid/total*100)+'%':'수납률 0%';
-  document.getElementById('fee-partial-cnt').textContent=cases.filter(c=>c.paid==='일부수납').length+'건';
-  document.getElementById('fee-unpaid-cnt').textContent=cases.filter(c=>c.paid==='미수납').length+'건';
-  if(total>0){document.getElementById('bar-paid').style.width=Math.round(paid/total*100)+'%';document.getElementById('bar-partial').style.width=Math.round(partial/total*100)+'%';document.getElementById('bar-unpaid').style.width=Math.round(unpaid/total*100)+'%';}
-}
-
-function renderUnpaid() {
-  const unpaid=cases.filter(c=>c.paid!=='완납');
-  const tbody=document.getElementById('unpaid-body');
-  if(!unpaid.length){tbody.innerHTML='<tr><td colspan="7" style="text-align:center;padding:24px;color:#aaa">미수납 사건 없음 🎉</td></tr>';return;}
-  tbody.innerHTML=unpaid.map((c,i)=>`<tr class="unpaid-row"><td><strong>${c.name}</strong></td><td>${c.client||'-'}</td><td style="font-size:12px;color:#666">${c.phone||'-'}</td><td><span class="avatar ${avColors[i%5]}">${(c.lawyer||'?')[0]}</span>${c.lawyer||'-'}</td><td><strong>${c.fee||0}만원</strong></td><td><span class="badge ${c.paid==='일부수납'?'badge-partial':'badge-unpaid'}">${c.paid||'미수납'}</span></td><td><button class="action-btn" onclick="openEdit(${c.id})">✏️</button></td></tr>`).join('');
-}
-
-function renderDeadlineTable() {
-  const today=new Date();
-  const allSorted=cases.map(c=>({...c,diff:c.deadline?Math.ceil((new Date(c.deadline)-today)/86400000):9999})).sort((a,b)=>a.diff-b.diff);
-  document.getElementById('d7-cnt').textContent=allSorted.filter(c=>c.diff<=7&&c.diff>=0&&c.status!=='완료').length;
-  document.getElementById('d30-cnt').textContent=allSorted.filter(c=>c.diff<=30&&c.diff>=0&&c.status!=='완료').length;
-  document.getElementById('no-deadline-cnt').textContent=cases.filter(c=>!c.deadline&&c.status!=='완료').length;
-  document.getElementById('done-cnt2').textContent=cases.filter(c=>c.status==='완료').length;
-  const tbody=document.getElementById('deadline-body');
-  if(!cases.length){tbody.innerHTML='<tr><td colspan="7" style="text-align:center;padding:24px;color:#aaa">사건이 없습니다</td></tr>';return;}
-  tbody.innerHTML=allSorted.map((c,i)=>{
-    const badge=c.status==='완료'?'badge-done':c.status==='진행중'?'badge-prog':'badge-wait';
-    const dl=c.deadline?c.deadline.substring(0,10):'-';
-    let dday='-',ddayStyle='color:#888';
-    if(c.deadline&&c.diff!==9999){if(c.diff<0){dday='만료';ddayStyle='color:#aaa';}else if(c.diff===0){dday='D-DAY';ddayStyle='color:#E24B4A;font-weight:700';}else if(c.diff<=7){dday='D-'+c.diff;ddayStyle='color:#E24B4A;font-weight:700';}else if(c.diff<=30){dday='D-'+c.diff;ddayStyle='color:#854F0B;font-weight:600';}else{dday='D-'+c.diff;}}
-    return `<tr><td><strong>${c.name}</strong></td><td>${c.client||'-'}</td><td><span class="avatar ${avColors[i%5]}">${(c.lawyer||'?')[0]}</span>${c.lawyer||'-'}</td><td><span class="badge ${badge}">${c.status}</span></td><td style="font-size:12px;color:#888">${dl}</td><td style="${ddayStyle}">${dday}</td><td><button class="action-btn" onclick="openEdit(${c.id})">✏️</button><button class="action-btn" onclick="deleteCase(${c.id})">🗑</button></td></tr>`;
-  }).join('');
-}
-
-function renderTable() {
-  const filtered=currentFilter==='all'?cases:cases.filter(c=>c.status===currentFilter);
-  const tbody=document.getElementById('case-body');
-  if(!filtered.length){tbody.innerHTML='<tr><td colspan="9" style="text-align:center;padding:24px;color:#aaa">사건이 없습니다</td></tr>';return;}
-  tbody.innerHTML=filtered.map((c,i)=>{
-    const badge=c.status==='완료'?'badge-done':c.status==='진행중'?'badge-prog':'badge-wait';
-    const pb=c.paid==='완납'?'badge-paid':c.paid==='일부수납'?'badge-partial':'badge-unpaid';
-    const dl=c.deadline?c.deadline.substring(0,10):'-';
-    return `<tr ${c.paid==='미수납'?'class="unpaid-row"':''}><td><strong>${c.name}</strong>${c.case_type?`<br><span style="font-size:11px;color:#aaa">${c.case_type}</span>`:''}</td><td>${c.client||'-'}</td><td style="font-size:12px;color:#666">${c.phone||'-'}</td><td><span class="avatar ${avColors[i%5]}">${(c.lawyer||'?')[0]}</span>${c.lawyer||'-'}</td><td><span class="badge ${badge}">${c.status}</span></td><td>${c.fee||0}만원</td><td><span class="badge ${pb}">${c.paid||'미수납'}</span></td><td style="color:#888;font-size:12px">${dl}</td><td><button class="action-btn" onclick="openEdit(${c.id})">✏️</button><button class="action-btn" onclick="deleteCase(${c.id})">🗑</button></td></tr>`;
-  }).join('');
-}
-
-function renderDeadlines() {
-  const today=new Date();
-  const upcoming=cases.filter(c=>c.deadline&&c.status!=='완료').map(c=>({...c,diff:Math.ceil((new Date(c.deadline)-today)/86400000)})).filter(c=>c.diff>=0).sort((a,b)=>a.diff-b.diff).slice(0,5);
-  const el=document.getElementById('deadline-list');
-  if(!upcoming.length){el.innerHTML='<div style="color:#aaa;font-size:12px;padding:8px 0">마감 임박 사건 없음</div>';return;}
-  el.innerHTML=upcoming.map(c=>`<div class="deadline-item"><span>${c.name}</span><span class="${c.diff<=7?'urgent':''}" style="${c.diff>7?'color:#888':''}">D-${c.diff}</span></div>`).join('');
-}
-
-function renderBars() {
-  const counts={};
-  cases.forEach(c=>{if(c.lawyer)counts[c.lawyer]=(counts[c.lawyer]||0)+1;});
-  const max=Math.max(...Object.values(counts),1);
-  const colors=['#1e2d45','#c9a84c','#0F6E56','#A32D2D','#3C3489'];
-  const el=document.getElementById('lawyer-bars');
-  if(!Object.keys(counts).length){el.innerHTML='<div style="color:#aaa;font-size:12px">데이터 없음</div>';return;}
-  el.innerHTML=Object.entries(counts).map(([name,n],i)=>`<div class="bar-row"><div class="bar-label"><span>${name}</span><span>${n}건</span></div><div class="bar-track"><div class="bar-fill" style="width:${Math.round(n/max*100)}%;background:${colors[i%5]}"></div></div></div>`).join('');
-}
-
-function filterCases(f) {
-  currentFilter=f;
-  document.querySelectorAll('.filter-btn').forEach((btn,i)=>{btn.classList.toggle('active',['all','진행중','완료','대기'][i]===f);});
-  renderTable();
-}
-
-function openModal() {
-  editId=null;
-  document.getElementById('modal-title').textContent='사건 추가';
-  ['f-name','f-client','f-phone','f-memo'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('f-fee').value='';
-  document.getElementById('f-deadline').value='';
-  document.getElementById('f-status').value='진행중';
-  document.getElementById('f-paid').value='미수납';
-  document.getElementById('f-type').value='';
-  document.getElementById('f-lawyer').value='';
-  document.getElementById('modal').classList.add('open');
-}
-
-function openEdit(id) {
-  const c=cases.find(x=>x.id===id);
-  if(!c)return;
-  editId=id;
-  document.getElementById('modal-title').textContent='사건 수정';
-  document.getElementById('f-name').value=c.name||'';
-  document.getElementById('f-client').value=c.client||'';
-  document.getElementById('f-phone').value=c.phone||'';
-  document.getElementById('f-lawyer').value=c.lawyer||'';
-  document.getElementById('f-status').value=c.status||'진행중';
-  document.getElementById('f-fee').value=c.fee||'';
-  document.getElementById('f-paid').value=c.paid||'미수납';
-  document.getElementById('f-deadline').value=c.deadline?c.deadline.substring(0,10):'';
-  document.getElementById('f-memo').value=c.memo||'';
-  document.getElementById('f-type').value=c.case_type||'';
-  document.getElementById('modal').classList.add('open');
-}
+function openEdit(id){const c=cases.find(x=>x.id===id);if(!c)return;editId=id;document.getElementById('modal-title').textContent='사건 수정';document.getElementById('f-name').value=c.name||'';document.getElementById('f-client').value=c.client||'';document.getElementById('f-phone').value=c.phone||'';document.getElementById('f-lawyer').value=c.lawyer||'';document.getElementById('f-status').value=c.status||'진행중';document.getElementById('f-fee').value=c.fee||'';document.getElementById('f-paid').value=c.paid||'미수납';document.getElementById('f-deadline').value=c.deadline?c.deadline.substring(0,10):'';document.getElementById('f-memo').value=c.memo||'';document.getElementById('f-type').value=c.case_type||'';document.getElementById('modal').classList.add('open');}
 
 function closeModal(){document.getElementById('modal').classList.remove('open');}
 
-async function saveCase() {
-  const body={name:document.getElementById('f-name').value,client:document.getElementById('f-client').value,phone:document.getElementById('f-phone').value,lawyer:document.getElementById('f-lawyer').value,status:document.getElementById('f-status').value,fee:parseInt(document.getElementById('f-fee').value)||0,paid:document.getElementById('f-paid').value,deadline:document.getElementById('f-deadline').value||null,memo:document.getElementById('f-memo').value,case_type:document.getElementById('f-type').value};
-  if(!body.name){alert('사건명을 입력해주세요');return;}
-  if(editId)await fetch(API+'/'+editId,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
-  else await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
-  closeModal();
-  loadAll();
-}
+async function saveCase(){const body={name:document.getElementById('f-name').value,client:document.getElementById('f-client').value,phone:document.getElementById('f-phone').value,lawyer:document.getElementById('f-lawyer').value,status:document.getElementById('f-status').value,fee:parseInt(document.getElementById('f-fee').value)||0,paid:document.getElementById('f-paid').value,deadline:document.getElementById('f-deadline').value||null,memo:document.getElementById('f-memo').value,case_type:document.getElementById('f-type').value};if(!body.name){alert('사건명을 입력해주세요');return;}if(editId)await fetch(API+'/'+editId,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});else await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});closeModal();loadAll();}
 
-async function deleteCase(id) {
-  if(!confirm('삭제하시겠습니까?'))return;
-  await fetch(API+'/'+id,{method:'DELETE'});
-  loadAll();
-}
+async function deleteCase(id){if(!confirm('삭제하시겠습니까?'))return;await fetch(API+'/'+id,{method:'DELETE'});loadAll();}
 
-function openStaffModal() {
-  editStaffId=null;
-  document.getElementById('staff-modal-title').textContent='직원 추가';
-  ['sf-name','sf-phone','sf-email'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('sf-role').value='변호사';
-  document.getElementById('staff-modal').classList.add('open');
-}
+function openStaffModal(){editStaffId=null;document.getElementById('staff-modal-title').textContent='직원 추가';['sf-name','sf-phone','sf-email'].forEach(id=>document.getElementById(id).value='');document.getElementById('sf-role').value='변호사';document.getElementById('staff-modal').classList.add('open');}
 
-function openStaffEdit(id) {
-  const s=staff.find(x=>x.id===id);
-  if(!s)return;
-  editStaffId=id;
-  document.getElementById('staff-modal-title').textContent='직원 수정';
-  document.getElementById('sf-name').value=s.name||'';
-  document.getElementById('sf-role').value=s.role||'변호사';
-  document.getElementById('sf-phone').value=s.phone||'';
-  document.getElementById('sf-email').value=s.email||'';
-  document.getElementById('staff-modal').classList.add('open');
-}
+function openStaffEdit(id){const s=staff.find(x=>x.id===id);if(!s)return;editStaffId=id;document.getElementById('staff-modal-title').textContent='직원 수정';document.getElementById('sf-name').value=s.name||'';document.getElementById('sf-role').value=s.role||'변호사';document.getElementById('sf-phone').value=s.phone||'';document.getElementById('sf-email').value=s.email||'';document.getElementById('staff-modal').classList.add('open');}
 
 function closeStaffModal(){document.getElementById('staff-modal').classList.remove('open');}
 
-async function saveStaff() {
-  const body={name:document.getElementById('sf-name').value,role:document.getElementById('sf-role').value,phone:document.getElementById('sf-phone').value,email:document.getElementById('sf-email').value};
-  if(!body.name){alert('이름을 입력해주세요');return;}
-  if(editStaffId)await fetch(STAFF_API+'/'+editStaffId,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
-  else await fetch(STAFF_API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
-  closeStaffModal();
-  loadAll();
-}
+async function saveStaff(){const body={name:document.getElementById('sf-name').value,role:document.getElementById('sf-role').value,phone:document.getElementById('sf-phone').value,email:document.getElementById('sf-email').value};if(!body.name){alert('이름을 입력해주세요');return;}if(editStaffId)await fetch(STAFF_API+'/'+editStaffId,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});else await fetch(STAFF_API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});closeStaffModal();loadAll();}
 
-async function deleteStaff(id) {
-  if(!confirm('직원을 삭제하시겠습니까?'))return;
-  await fetch(STAFF_API+'/'+id,{method:'DELETE'});
-  loadAll();
-}
+async function deleteStaff(id){if(!confirm('직원을 삭제하시겠습니까?'))return;await fetch(STAFF_API+'/'+id,{method:'DELETE'});loadAll();}
 
 setDate();
 checkLogin();
