@@ -9,7 +9,6 @@
 * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Noto Sans KR', sans-serif; -webkit-tap-highlight-color: transparent; }
 body { background: #f0f2f5; min-height: 100vh; }
 :root { --navy: #1e2d45; --gold: #c9a84c; --gold-light: #f0d080; }
-
 .login-wrap { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: var(--navy); padding: 16px; }
 .login-box { background: #fff; border-radius: 16px; padding: 40px 36px; width: 360px; max-width: 100%; }
 .login-logo { text-align: center; margin-bottom: 28px; }
@@ -22,7 +21,6 @@ body { background: #f0f2f5; min-height: 100vh; }
 .login-field input:focus { border-color: var(--gold); }
 .login-btn { width: 100%; background: var(--navy); color: var(--gold-light); border: none; border-radius: 8px; padding: 14px; font-size: 15px; font-weight: 700; cursor: pointer; margin-top: 8px; }
 .login-error { color: #E24B4A; font-size: 12px; text-align: center; margin-top: 10px; display: none; }
-
 .wrap { max-width: 1100px; margin: 0 auto; padding: 16px; display: none; }
 .header { background: var(--navy); border-radius: 12px; padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
 .header-left { display: flex; align-items: center; gap: 12px; }
@@ -32,11 +30,9 @@ body { background: #f0f2f5; min-height: 100vh; }
 .header-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
 .date { border: 1px solid var(--gold); color: var(--gold-light); border-radius: 20px; padding: 4px 10px; font-size: 11px; white-space: nowrap; }
 .logout-btn { background: none; border: 1px solid #a8b8cc; color: #a8b8cc; border-radius: 20px; padding: 4px 10px; font-size: 11px; cursor: pointer; white-space: nowrap; }
-
 .tabs { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; margin-bottom: 12px; background: #fff; border-radius: 10px; padding: 4px; border: 1px solid #e8e8e8; }
 .tab { padding: 8px 4px; text-align: center; font-size: 11px; font-weight: 600; border-radius: 7px; cursor: pointer; color: #888; border: none; background: none; line-height: 1.3; }
 .tab.active { background: var(--navy); color: var(--gold-light); }
-
 .stat-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 12px; }
 .stat-card { background: #fff; border-radius: 10px; padding: 14px 16px; cursor: pointer; border: 1.5px solid #e8e8e8; transition: border-color 0.15s; }
 .stat-card:hover { border-color: var(--gold); }
@@ -47,12 +43,10 @@ body { background: #f0f2f5; min-height: 100vh; }
 .stat-num.red { color: #E24B4A; }
 .stat-num.green { color: #3B6D11; }
 .stat-desc { font-size: 11px; color: #aaa; margin-top: 4px; }
-
 .chart-grid { display: grid; grid-template-columns: 1fr; gap: 12px; margin-bottom: 12px; }
 .chart-card { background: #fff; border-radius: 12px; padding: 16px; border: 1px solid #e8e8e8; }
 .chart-title { font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 12px; }
 .chart-wrap { position: relative; height: 200px; }
-
 .fee-overview { background: #fff; border-radius: 12px; padding: 16px; border: 1px solid #e8e8e8; margin-bottom: 12px; }
 .fee-overview-title { font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 12px; }
 .fee-bar-wrap { height: 18px; background: #f0f0f0; border-radius: 10px; overflow: hidden; display: flex; margin-bottom: 10px; }
@@ -62,12 +56,10 @@ body { background: #f0f2f5; min-height: 100vh; }
 .fee-legend { display: flex; gap: 16px; font-size: 12px; flex-wrap: wrap; }
 .legend-item { display: flex; align-items: center; gap: 6px; }
 .legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
-
 .section-header { background: var(--navy); border-radius: 8px; padding: 10px 16px; color: #f5f0e8; font-size: 13px; font-weight: 600; margin-bottom: 10px; }
 .filter-row { display: flex; gap: 6px; margin-bottom: 10px; flex-wrap: wrap; }
 .filter-btn { background: #fff; border: 1.5px solid #ddd; border-radius: 20px; padding: 6px 14px; font-size: 12px; cursor: pointer; transition: all 0.15s; white-space: nowrap; }
 .filter-btn.active { background: var(--navy); color: var(--gold-light); border-color: var(--navy); }
-
 .table-wrap { background: #fff; border-radius: 12px; overflow-x: auto; border: 1px solid #e8e8e8; margin-bottom: 12px; -webkit-overflow-scrolling: touch; }
 table { width: 100%; border-collapse: collapse; min-width: 600px; }
 thead tr { background: #f7f8fa; }
@@ -76,7 +68,6 @@ td { padding: 10px 12px; font-size: 12px; border-bottom: 1px solid #f0f0f0; colo
 tr:last-child td { border-bottom: none; }
 tr:hover td { background: #fafbfc; }
 tr.unpaid-row td { background: #fff8f8; }
-
 .badge { display: inline-block; padding: 3px 8px; border-radius: 12px; font-size: 10px; font-weight: 600; white-space: nowrap; }
 .badge-prog { background: #E6F1FB; color: #185FA5; }
 .badge-done { background: #EAF3DE; color: #3B6D11; }
@@ -84,10 +75,8 @@ tr.unpaid-row td { background: #fff8f8; }
 .badge-paid { background: #EAF3DE; color: #3B6D11; }
 .badge-partial { background: #FAEEDA; color: #854F0B; }
 .badge-unpaid { background: #FDECEA; color: #A32D2D; }
-
 .avatar { width: 24px; height: 24px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; margin-right: 4px; vertical-align: middle; flex-shrink: 0; }
 .av1{background:#1e2d45;color:#f0d080}.av2{background:#8B6914;color:#fdf3dc}.av3{background:#0F6E56;color:#9FE1CB}.av4{background:#A32D2D;color:#F7C1C1}.av5{background:#3C3489;color:#CECBF6}
-
 .bottom-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
 .mini-card { background: #fff; border-radius: 12px; padding: 16px; border: 1px solid #e8e8e8; }
 .mini-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; color: #1e2d45; }
@@ -99,10 +88,12 @@ tr.unpaid-row td { background: #fff8f8; }
 .bar-label { display: flex; justify-content: space-between; font-size: 12px; color: #666; margin-bottom: 4px; }
 .bar-track { height: 8px; background: #f0f0f0; border-radius: 4px; overflow: hidden; }
 .bar-fill { height: 100%; border-radius: 4px; }
-
 .add-btn { background: var(--gold); color: var(--navy); border: none; border-radius: 8px; padding: 10px 18px; font-size: 13px; font-weight: 700; cursor: pointer; margin-bottom: 12px; min-height: 44px; }
 .add-btn:active { background: var(--gold-light); }
-
+.alert-btn { background: #fff; color: var(--navy); border: 2px solid var(--navy); border-radius: 8px; padding: 10px 18px; font-size: 13px; font-weight: 700; cursor: pointer; margin-bottom: 12px; min-height: 44px; margin-left: 8px; }
+.alert-btn:hover { background: var(--navy); color: var(--gold-light); }
+.alert-box { background: #EAF3DE; border: 1px solid #3B6D11; border-radius: 8px; padding: 12px 16px; margin-bottom: 12px; font-size: 13px; color: #3B6D11; display: none; }
+.alert-box.error { background: #FDECEA; border-color: #A32D2D; color: #A32D2D; }
 .staff-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; margin-bottom: 12px; }
 .staff-card { background: #fff; border-radius: 12px; padding: 18px; border: 1px solid #e8e8e8; }
 .staff-avatar { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 700; margin-bottom: 12px; }
@@ -113,7 +104,6 @@ tr.unpaid-row td { background: #fff8f8; }
 .staff-edit-btn { flex: 1; background: var(--navy); color: var(--gold-light); border: none; border-radius: 7px; padding: 8px; font-size: 12px; cursor: pointer; min-height: 36px; }
 .staff-del-btn { background: #fff; color: #E24B4A; border: 1px solid #E24B4A; border-radius: 7px; padding: 8px 12px; font-size: 12px; cursor: pointer; min-height: 36px; }
 .staff-cases { font-size: 11px; color: var(--gold); font-weight: 700; margin-top: 6px; }
-
 .modal-bg { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 100; align-items: flex-end; justify-content: center; }
 .modal-bg.open { display: flex; }
 .modal { background: #fff; border-radius: 20px 20px 0 0; padding: 24px 20px; width: 100%; max-width: 560px; max-height: 90vh; overflow-y: auto; }
@@ -130,7 +120,6 @@ tr.unpaid-row td { background: #fff8f8; }
 .action-btn { background: none; border: none; cursor: pointer; font-size: 16px; padding: 4px 6px; min-height: 32px; min-width: 32px; }
 .page { display: none; }
 .page.active { display: block; }
-
 @media (min-width: 768px) {
   .wrap { padding: 24px 16px; }
   .stat-grid { grid-template-columns: repeat(4, 1fr); gap: 12px; }
@@ -140,9 +129,6 @@ tr.unpaid-row td { background: #fff8f8; }
   .modal-bg { align-items: center; }
   .modal { border-radius: 14px; padding: 28px; max-width: 480px; }
   .tab { font-size: 13px; padding: 8px; }
-  .header-title { font-size: 17px; }
-  .header-sub { font-size: 12px; }
-  .date, .logout-btn { font-size: 12px; padding: 4px 14px; }
 }
 </style>
 </head>
@@ -267,7 +253,9 @@ tr.unpaid-row td { background: #fff8f8; }
       <div class="stat-card"><div class="stat-label">📋 마감 미설정</div><div class="stat-num" id="no-deadline-cnt">0</div><div class="stat-desc">기한 없는 사건</div></div>
       <div class="stat-card"><div class="stat-label">✅ 완료</div><div class="stat-num green" id="done-cnt2">0</div><div class="stat-desc">처리 완료</div></div>
     </div>
-    <div class="section-header">📅 전체 일정 현황</div>
+    <div class="section-header">📅 일정 현황</div>
+    <div id="alert-result" class="alert-box"></div>
+    <button class="add-btn" onclick="sendTestAlert()">📧 지금 알림 이메일 발송 테스트</button>
     <div class="table-wrap"><table><thead><tr><th>사건명</th><th>의뢰인</th><th>담당자</th><th>상태</th><th>마감일</th><th>D-day</th><th>관리</th></tr></thead><tbody id="deadline-body"></tbody></table></div>
   </div>
 </div>
@@ -313,7 +301,6 @@ tr.unpaid-row td { background: #fff8f8; }
         <option value="본부장">본부장</option>
         <option value="과장">과장</option>
         <option value="사무장">사무장</option>
-        <option value="사무장">사무장</option>
         <option value="직원">직원</option>
         <option value="인턴">인턴</option>
       </select></div>
@@ -330,7 +317,7 @@ tr.unpaid-row td { background: #fff8f8; }
 </div>
 
 <script>
-const API='/api/cases', STAFF_API='/api/staff';
+const API='/api/cases',STAFF_API='/api/staff';
 let cases=[],staff=[],currentFilter='all',editId=null,editStaffId=null;
 const avColors=['av1','av2','av3','av4','av5'];
 const avBgs=['#1e2d45','#8B6914','#0F6E56','#A32D2D','#3C3489'];
@@ -338,20 +325,29 @@ const avFgs=['#f0d080','#fdf3dc','#9FE1CB','#F7C1C1','#CECBF6'];
 let charts={};
 
 function setDate(){const d=new Date();document.getElementById('today').textContent=`${d.getFullYear()}년 ${d.getMonth()+1}월 ${d.getDate()}일`;}
-
 async function checkLogin(){const res=await fetch('/api/me');const data=await res.json();if(data.loggedIn)showDashboard();else showLogin();}
 function showLogin(){document.getElementById('login-wrap').style.display='flex';document.getElementById('dashboard').style.display='none';}
 async function showDashboard(){document.getElementById('login-wrap').style.display='none';document.getElementById('dashboard').style.display='block';await loadAll();}
 async function doLogin(){const id=document.getElementById('login-id').value,pw=document.getElementById('login-pw').value;const res=await fetch('/api/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id,password:pw})});if(res.ok){document.getElementById('login-error').style.display='none';showDashboard();}else document.getElementById('login-error').style.display='block';}
 async function doLogout(){await fetch('/api/logout',{method:'POST'});showLogin();}
-
 async function loadAll(){const[cr,sr]=await Promise.all([fetch(API),fetch(STAFF_API)]);if(cr.status===401){showLogin();return;}cases=await cr.json();staff=await sr.json();updateLawyerSelect();render();}
-
 function updateLawyerSelect(){const sel=document.getElementById('f-lawyer');const cur=sel.value;sel.innerHTML='<option value="">선택</option>';staff.forEach(s=>{const o=document.createElement('option');o.value=s.name+' '+s.role;o.textContent=s.name+' '+s.role;sel.appendChild(o);});sel.value=cur;}
-
 function showPage(name,btn){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.getElementById('page-'+name).classList.add('active');btn.classList.add('active');if(name==='chart')renderCharts();}
-
 function render(){updateStats();renderTable();renderDeadlines();renderBars();renderFeeStats();renderUnpaid();renderDeadlineTable();renderStaff();}
+
+async function sendTestAlert(){
+  const btn=event.target;
+  btn.disabled=true;btn.textContent='📧 발송 중...';
+  const box=document.getElementById('alert-result');
+  try{
+    const res=await fetch('/api/send-alert',{method:'POST'});
+    const data=await res.json();
+    box.style.display='block';
+    if(res.ok){box.className='alert-box';box.textContent='✅ 알림 이메일 발송 완료! swcho73@nate.com 을 확인해보세요.';}
+    else{box.className='alert-box error';box.textContent='❌ 발송 실패: '+data.error;}
+  }catch(e){box.className='alert-box error';box.style.display='block';box.textContent='❌ 오류: '+e.message;}
+  btn.disabled=false;btn.textContent='📧 지금 알림 이메일 발송 테스트';
+}
 
 function updateStats(){const total=cases.length,prog=cases.filter(c=>c.status==='진행중').length,done=cases.filter(c=>c.status==='완료').length,wait=cases.filter(c=>c.status==='대기').length,totalFee=cases.reduce((s,c)=>s+(c.fee||0),0),unpaidFee=cases.filter(c=>c.paid!=='완납').reduce((s,c)=>s+(c.fee||0),0);document.getElementById('cnt-all').textContent=total;document.getElementById('cnt-prog').textContent=prog;document.getElementById('cnt-done').textContent=done;document.getElementById('pct-prog').textContent=total?Math.round(prog/total*100)+'% 진행 비율':'-';document.getElementById('total-fee').textContent=totalFee+'만';document.getElementById('unpaid-fee').textContent='미수금: '+unpaidFee+'만원';document.getElementById('fb-all').textContent=total;document.getElementById('fb-prog').textContent=prog;document.getElementById('fb-done').textContent=done;document.getElementById('fb-wait').textContent=wait;}
 
