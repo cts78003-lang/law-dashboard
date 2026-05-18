@@ -7,56 +7,64 @@
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Noto Sans KR', sans-serif; }
 body { background: #f0f2f5; min-height: 100vh; }
-:root {
-  --navy: #1e2d45;
-  --navy2: #253550;
-  --gold: #c9a84c;
-  --gold-light: #f0d080;
-  --gold-pale: #fdf3dc;
-}
+:root { --navy: #1e2d45; --gold: #c9a84c; --gold-light: #f0d080; }
 .wrap { max-width: 1100px; margin: 0 auto; padding: 24px 16px; }
-.header {
-  background: var(--navy);
-  border-radius: 12px;
-  padding: 16px 24px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 16px;
-}
+.header { background: var(--navy); border-radius: 12px; padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
 .header-left { display: flex; align-items: center; gap: 14px; }
 .logo { width: 38px; height: 38px; background: var(--gold); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
 .header-title { color: #f5f0e8; font-size: 17px; font-weight: 700; }
 .header-sub { color: #a8b8cc; font-size: 12px; margin-top: 2px; }
 .date { border: 1px solid var(--gold); color: var(--gold-light); border-radius: 20px; padding: 4px 14px; font-size: 12px; }
+
+/* 탭 */
+.tabs { display: flex; gap: 4px; margin-bottom: 16px; background: #fff; border-radius: 10px; padding: 4px; border: 1px solid #e8e8e8; }
+.tab { flex: 1; padding: 8px; text-align: center; font-size: 13px; font-weight: 600; border-radius: 7px; cursor: pointer; color: #888; border: none; background: none; }
+.tab.active { background: var(--navy); color: var(--gold-light); }
+
+/* 통계 카드 */
 .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px; }
 .stat-card { background: #fff; border-radius: 10px; padding: 16px 18px; cursor: pointer; border: 1.5px solid #e8e8e8; transition: border-color 0.15s; }
 .stat-card:hover { border-color: var(--gold); }
+.stat-card.danger { border-color: #ffcccc; background: #fff8f8; }
 .stat-label { font-size: 12px; color: #888; margin-bottom: 6px; }
 .stat-num { font-size: 28px; font-weight: 700; color: #1e2d45; }
 .stat-num.gold { color: var(--gold); }
+.stat-num.red { color: #E24B4A; }
+.stat-num.green { color: #3B6D11; }
 .stat-desc { font-size: 11px; color: #aaa; margin-top: 4px; }
-.section-header { background: var(--navy); border-radius: 8px; padding: 10px 18px; color: #f5f0e8; font-size: 14px; font-weight: 600; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
-.filter-row { display: flex; gap: 8px; margin-bottom: 12px; }
+
+/* 수납 현황 바 */
+.fee-overview { background: #fff; border-radius: 12px; padding: 20px; border: 1px solid #e8e8e8; margin-bottom: 16px; }
+.fee-overview-title { font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 16px; }
+.fee-bar-wrap { height: 20px; background: #f0f0f0; border-radius: 10px; overflow: hidden; display: flex; margin-bottom: 10px; }
+.fee-bar-paid { background: #3B6D11; height: 100%; transition: width 0.5s; }
+.fee-bar-partial { background: #c9a84c; height: 100%; transition: width 0.5s; }
+.fee-bar-unpaid { background: #E24B4A; height: 100%; transition: width 0.5s; }
+.fee-legend { display: flex; gap: 20px; font-size: 12px; }
+.legend-item { display: flex; align-items: center; gap: 6px; }
+.legend-dot { width: 10px; height: 10px; border-radius: 50%; }
+
+.section-header { background: var(--navy); border-radius: 8px; padding: 10px 18px; color: #f5f0e8; font-size: 14px; font-weight: 600; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+.filter-row { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
 .filter-btn { background: #fff; border: 1.5px solid #ddd; border-radius: 20px; padding: 5px 16px; font-size: 13px; cursor: pointer; transition: all 0.15s; }
 .filter-btn.active { background: var(--navy); color: var(--gold-light); border-color: var(--navy); }
 .table-wrap { background: #fff; border-radius: 12px; overflow: hidden; border: 1px solid #e8e8e8; margin-bottom: 16px; }
 table { width: 100%; border-collapse: collapse; }
 thead tr { background: #f7f8fa; }
 th { padding: 10px 16px; text-align: left; font-size: 12px; color: #888; border-bottom: 1px solid #eee; font-weight: 600; }
-td { padding: 12px 16px; font-size: 13px; border-bottom: 1px solid #f0f0f0; color: #222; }
+td { padding: 11px 16px; font-size: 13px; border-bottom: 1px solid #f0f0f0; color: #222; }
 tr:last-child td { border-bottom: none; }
 tr:hover td { background: #fafbfc; }
+tr.unpaid-row td { background: #fff8f8; }
 .badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; }
 .badge-prog { background: #E6F1FB; color: #185FA5; }
 .badge-done { background: #EAF3DE; color: #3B6D11; }
 .badge-wait { background: #FAEEDA; color: #854F0B; }
+.badge-paid { background: #EAF3DE; color: #3B6D11; }
+.badge-partial { background: #FAEEDA; color: #854F0B; }
+.badge-unpaid { background: #FDECEA; color: #A32D2D; }
 .avatar { width: 26px; height: 26px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; margin-right: 5px; vertical-align: middle; }
-.av1 { background: #1e2d45; color: #f0d080; }
-.av2 { background: #8B6914; color: #fdf3dc; }
-.av3 { background: #0F6E56; color: #9FE1CB; }
-.av4 { background: #A32D2D; color: #F7C1C1; }
-.av5 { background: #3C3489; color: #CECBF6; }
+.av1 { background: #1e2d45; color: #f0d080; } .av2 { background: #8B6914; color: #fdf3dc; } .av3 { background: #0F6E56; color: #9FE1CB; } .av4 { background: #A32D2D; color: #F7C1C1; } .av5 { background: #3C3489; color: #CECBF6; }
 .bottom-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .mini-card { background: #fff; border-radius: 12px; padding: 16px 18px; border: 1px solid #e8e8e8; }
 .mini-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; color: #1e2d45; }
@@ -71,15 +79,20 @@ tr:hover td { background: #fafbfc; }
 .add-btn:hover { background: var(--gold-light); }
 .modal-bg { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 100; align-items: center; justify-content: center; }
 .modal-bg.open { display: flex; }
-.modal { background: #fff; border-radius: 14px; padding: 28px; width: 420px; max-width: 95vw; }
+.modal { background: #fff; border-radius: 14px; padding: 28px; width: 480px; max-width: 95vw; max-height: 90vh; overflow-y: auto; }
 .modal h3 { font-size: 16px; color: var(--navy); margin-bottom: 20px; font-weight: 700; }
 .form-row { margin-bottom: 14px; }
-.form-row label { display: block; font-size: 12px; color: #666; margin-bottom: 5px; }
-.form-row input, .form-row select { width: 100%; border: 1.5px solid #ddd; border-radius: 7px; padding: 8px 12px; font-size: 13px; outline: none; }
-.form-row input:focus, .form-row select:focus { border-color: var(--gold); }
+.form-row label { display: block; font-size: 12px; color: #666; margin-bottom: 5px; font-weight: 600; }
+.form-row input, .form-row select, .form-row textarea { width: 100%; border: 1.5px solid #ddd; border-radius: 7px; padding: 8px 12px; font-size: 13px; outline: none; font-family: inherit; }
+.form-row input:focus, .form-row select:focus, .form-row textarea:focus { border-color: var(--gold); }
+.form-row textarea { resize: vertical; min-height: 70px; }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .modal-btns { display: flex; gap: 8px; margin-top: 20px; }
 .btn-cancel { flex: 1; background: #f0f0f0; border: none; border-radius: 8px; padding: 10px; font-size: 13px; cursor: pointer; }
 .btn-save { flex: 2; background: var(--navy); color: var(--gold-light); border: none; border-radius: 8px; padding: 10px; font-size: 13px; font-weight: 700; cursor: pointer; }
+.action-btn { background: none; border: none; cursor: pointer; font-size: 15px; padding: 2px 4px; }
+.page { display: none; }
+.page.active { display: block; }
 </style>
 </head>
 <body>
@@ -95,76 +108,180 @@ tr:hover td { background: #fafbfc; }
     <div class="date" id="today"></div>
   </div>
 
-  <div class="stat-grid">
-    <div class="stat-card" onclick="filterCases('all')">
-      <div class="stat-label">📁 전체 사건</div>
-      <div class="stat-num" id="cnt-all">0</div>
-      <div class="stat-desc">등록된 사건 수</div>
+  <!-- 탭 -->
+  <div class="tabs">
+    <button class="tab active" onclick="showPage('cases')">📋 사건 관리</button>
+    <button class="tab" onclick="showPage('fee')">💰 수임료 현황</button>
+    <button class="tab" onclick="showPage('deadline')">📅 일정 관리</button>
+  </div>
+
+  <!-- 사건 관리 페이지 -->
+  <div class="page active" id="page-cases">
+    <div class="stat-grid">
+      <div class="stat-card" onclick="filterCases('all')">
+        <div class="stat-label">📁 전체 사건</div>
+        <div class="stat-num" id="cnt-all">0</div>
+        <div class="stat-desc">등록된 사건 수</div>
+      </div>
+      <div class="stat-card" onclick="filterCases('진행중')">
+        <div class="stat-label">⏳ 진행중</div>
+        <div class="stat-num" id="cnt-prog">0</div>
+        <div class="stat-desc" id="pct-prog">-</div>
+      </div>
+      <div class="stat-card" onclick="filterCases('완료')">
+        <div class="stat-label">✅ 완료</div>
+        <div class="stat-num" id="cnt-done">0</div>
+        <div class="stat-desc">완료 사건</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">💰 총 수임료</div>
+        <div class="stat-num gold" id="total-fee">0만</div>
+        <div class="stat-desc" id="unpaid-fee">미수금: 0만원</div>
+      </div>
     </div>
-    <div class="stat-card" onclick="filterCases('진행중')">
-      <div class="stat-label">⏳ 진행중</div>
-      <div class="stat-num" id="cnt-prog">0</div>
-      <div class="stat-desc" id="pct-prog">-</div>
+
+    <div class="section-header">📋 사건 목록 &amp; 현황</div>
+    <div class="filter-row">
+      <button class="filter-btn active" onclick="filterCases('all')">전체 <span id="fb-all">0</span></button>
+      <button class="filter-btn" onclick="filterCases('진행중')">진행중 <span id="fb-prog">0</span></button>
+      <button class="filter-btn" onclick="filterCases('완료')">완료 <span id="fb-done">0</span></button>
+      <button class="filter-btn" onclick="filterCases('대기')">대기 <span id="fb-wait">0</span></button>
     </div>
-    <div class="stat-card" onclick="filterCases('완료')">
-      <div class="stat-label">✅ 완료</div>
-      <div class="stat-num" id="cnt-done">0</div>
-      <div class="stat-desc">완료 사건</div>
+    <button class="add-btn" onclick="openModal()">+ 사건 추가</button>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>사건명</th><th>의뢰인</th><th>연락처</th><th>담당자</th><th>상태</th><th>수임료</th><th>수납</th><th>마감일</th><th>관리</th></tr>
+        </thead>
+        <tbody id="case-body"></tbody>
+      </table>
     </div>
-    <div class="stat-card">
-      <div class="stat-label">💰 총 수임료</div>
-      <div class="stat-num gold" id="total-fee">0만</div>
-      <div class="stat-desc" id="max-fee">-</div>
+    <div class="bottom-grid">
+      <div class="mini-card">
+        <div class="mini-title">📅 마감 임박 사건</div>
+        <div id="deadline-list"></div>
+      </div>
+      <div class="mini-card">
+        <div class="mini-title">📊 담당자별 현황</div>
+        <div id="lawyer-bars"></div>
+      </div>
     </div>
   </div>
 
-  <div class="section-header">📋 사건 목록 &amp; 현황</div>
-  <div class="filter-row">
-    <button class="filter-btn active" onclick="filterCases('all')">전체 <span id="fb-all">0</span></button>
-    <button class="filter-btn" onclick="filterCases('진행중')">진행중 <span id="fb-prog">0</span></button>
-    <button class="filter-btn" onclick="filterCases('완료')">완료 <span id="fb-done">0</span></button>
-    <button class="filter-btn" onclick="filterCases('대기')">대기 <span id="fb-wait">0</span></button>
-  </div>
-  <button class="add-btn" onclick="openModal()">+ 사건 추가</button>
-
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th>사건명</th><th>의뢰인</th><th>담당자</th><th>상태</th><th>수임료</th><th>마감일</th><th></th>
-        </tr>
-      </thead>
-      <tbody id="case-body"></tbody>
-    </table>
-  </div>
-
-  <div class="bottom-grid">
-    <div class="mini-card">
-      <div class="mini-title">📅 마감 임박 사건</div>
-      <div id="deadline-list"></div>
+  <!-- 수임료 현황 페이지 -->
+  <div class="page" id="page-fee">
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="stat-label">💰 총 수임료</div>
+        <div class="stat-num gold" id="fee-total">0만</div>
+        <div class="stat-desc">전체 사건 합계</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">✅ 완납</div>
+        <div class="stat-num green" id="fee-paid">0만</div>
+        <div class="stat-desc" id="fee-paid-pct">수납률 0%</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">🔶 일부수납</div>
+        <div class="stat-num gold" id="fee-partial">0만</div>
+        <div class="stat-desc" id="fee-partial-cnt">0건</div>
+      </div>
+      <div class="stat-card danger">
+        <div class="stat-label">🔴 미수납</div>
+        <div class="stat-num red" id="fee-unpaid">0만</div>
+        <div class="stat-desc" id="fee-unpaid-cnt">0건</div>
+      </div>
     </div>
-    <div class="mini-card">
-      <div class="mini-title">📊 담당자별 현황</div>
-      <div id="lawyer-bars"></div>
+
+    <div class="fee-overview">
+      <div class="fee-overview-title">수임료 수납 현황</div>
+      <div class="fee-bar-wrap">
+        <div class="fee-bar-paid" id="bar-paid" style="width:0%"></div>
+        <div class="fee-bar-partial" id="bar-partial" style="width:0%"></div>
+        <div class="fee-bar-unpaid" id="bar-unpaid" style="width:0%"></div>
+      </div>
+      <div class="fee-legend">
+        <div class="legend-item"><div class="legend-dot" style="background:#3B6D11"></div><span>완납</span></div>
+        <div class="legend-item"><div class="legend-dot" style="background:#c9a84c"></div><span>일부수납</span></div>
+        <div class="legend-item"><div class="legend-dot" style="background:#E24B4A"></div><span>미수납</span></div>
+      </div>
+    </div>
+
+    <div class="section-header">🔴 미수납 사건 목록</div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>사건명</th><th>의뢰인</th><th>연락처</th><th>담당자</th><th>수임료</th><th>수납상태</th><th>관리</th></tr>
+        </thead>
+        <tbody id="unpaid-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 일정 관리 페이지 -->
+  <div class="page" id="page-deadline">
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="stat-label">🚨 D-7 이내</div>
+        <div class="stat-num red" id="d7-cnt">0</div>
+        <div class="stat-desc">긴급 마감</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">⚠️ D-30 이내</div>
+        <div class="stat-num gold" id="d30-cnt">0</div>
+        <div class="stat-desc">이번 달 마감</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">📋 마감 미설정</div>
+        <div class="stat-num" id="no-deadline-cnt">0</div>
+        <div class="stat-desc">기한 없는 사건</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">✅ 완료 사건</div>
+        <div class="stat-num green" id="done-cnt2">0</div>
+        <div class="stat-desc">처리 완료</div>
+      </div>
+    </div>
+    <div class="section-header">📅 전체 일정 현황</div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>사건명</th><th>의뢰인</th><th>담당자</th><th>상태</th><th>마감일</th><th>D-day</th><th>관리</th></tr>
+        </thead>
+        <tbody id="deadline-body"></tbody>
+      </table>
     </div>
   </div>
 </div>
 
+<!-- 모달 -->
 <div class="modal-bg" id="modal">
   <div class="modal">
-    <h3>사건 추가</h3>
-    <div class="form-row"><label>사건명</label><input id="f-name" placeholder="예: 교통사고 손해배상"></div>
-    <div class="form-row"><label>의뢰인</label><input id="f-client" placeholder="예: 홍길동"></div>
-    <div class="form-row"><label>담당자</label><input id="f-lawyer" placeholder="예: 김태준 대표변호사"></div>
-    <div class="form-row"><label>상태</label>
-      <select id="f-status">
-        <option value="진행중">진행중</option>
-        <option value="완료">완료</option>
-        <option value="대기">대기</option>
-      </select>
+    <h3 id="modal-title">사건 추가</h3>
+    <div class="form-grid">
+      <div class="form-row"><label>사건명 *</label><input id="f-name" placeholder="예: 교통사고 손해배상"></div>
+      <div class="form-row"><label>사건 유형</label>
+        <select id="f-type"><option value="">선택</option><option value="민사">민사</option><option value="형사">형사</option><option value="가사">가사</option><option value="행정">행정</option><option value="기타">기타</option></select>
+      </div>
     </div>
-    <div class="form-row"><label>수임료 (만원)</label><input id="f-fee" type="number" placeholder="예: 50"></div>
+    <div class="form-grid">
+      <div class="form-row"><label>의뢰인 *</label><input id="f-client" placeholder="예: 홍길동"></div>
+      <div class="form-row"><label>연락처</label><input id="f-phone" placeholder="010-0000-0000"></div>
+    </div>
+    <div class="form-grid">
+      <div class="form-row"><label>담당자</label><input id="f-lawyer" placeholder="예: 김태준 대표변호사"></div>
+      <div class="form-row"><label>상태</label>
+        <select id="f-status"><option value="진행중">진행중</option><option value="완료">완료</option><option value="대기">대기</option></select>
+      </div>
+    </div>
+    <div class="form-grid">
+      <div class="form-row"><label>수임료 (만원)</label><input id="f-fee" type="number" placeholder="예: 50"></div>
+      <div class="form-row"><label>수납 여부</label>
+        <select id="f-paid"><option value="미수납">미수납</option><option value="일부수납">일부수납</option><option value="완납">완납</option></select>
+      </div>
+    </div>
     <div class="form-row"><label>마감일</label><input id="f-deadline" type="date"></div>
+    <div class="form-row"><label>메모</label><textarea id="f-memo" placeholder="진행 상황, 특이사항 등"></textarea></div>
     <div class="modal-btns">
       <button class="btn-cancel" onclick="closeModal()">취소</button>
       <button class="btn-save" onclick="saveCase()">저장</button>
@@ -176,11 +293,20 @@ tr:hover td { background: #fafbfc; }
 const API = '/api/cases';
 let cases = [];
 let currentFilter = 'all';
+let editId = null;
 const avColors = ['av1','av2','av3','av4','av5'];
 
 function setDate() {
   const d = new Date();
   document.getElementById('today').textContent = `${d.getFullYear()}년 ${d.getMonth()+1}월 ${d.getDate()}일`;
+}
+
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  event.target.classList.add('active');
+  render();
 }
 
 async function loadCases() {
@@ -194,6 +320,9 @@ function render() {
   renderTable();
   renderDeadlines();
   renderBars();
+  renderFeeStats();
+  renderUnpaid();
+  renderDeadlineTable();
 }
 
 function updateStats() {
@@ -202,56 +331,130 @@ function updateStats() {
   const done = cases.filter(c => c.status === '완료').length;
   const wait = cases.filter(c => c.status === '대기').length;
   const totalFee = cases.reduce((s,c) => s + (c.fee||0), 0);
-  const maxCase = cases.reduce((a,b) => (a.fee||0) > (b.fee||0) ? a : b, {});
-
+  const unpaidFee = cases.filter(c => c.paid !== '완납').reduce((s,c) => s + (c.fee||0), 0);
   document.getElementById('cnt-all').textContent = total;
   document.getElementById('cnt-prog').textContent = prog;
   document.getElementById('cnt-done').textContent = done;
   document.getElementById('pct-prog').textContent = total ? Math.round(prog/total*100) + '% 진행 비율' : '-';
   document.getElementById('total-fee').textContent = totalFee + '만';
-  document.getElementById('max-fee').textContent = maxCase.name ? `최고 ${maxCase.name.substring(0,4)} ${maxCase.fee}만` : '-';
+  document.getElementById('unpaid-fee').textContent = '미수금: ' + unpaidFee + '만원';
   document.getElementById('fb-all').textContent = total;
   document.getElementById('fb-prog').textContent = prog;
   document.getElementById('fb-done').textContent = done;
   document.getElementById('fb-wait').textContent = wait;
 }
 
-function renderTable() {
-  const filtered = currentFilter === 'all' ? cases : cases.filter(c => c.status === currentFilter);
-  const tbody = document.getElementById('case-body');
-  if (!filtered.length) {
-    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:24px;color:#aaa">사건이 없습니다</td></tr>';
-    return;
+function renderFeeStats() {
+  const total = cases.reduce((s,c) => s + (c.fee||0), 0);
+  const paid = cases.filter(c => c.paid === '완납').reduce((s,c) => s + (c.fee||0), 0);
+  const partial = cases.filter(c => c.paid === '일부수납').reduce((s,c) => s + (c.fee||0), 0);
+  const unpaid = cases.filter(c => c.paid === '미수납').reduce((s,c) => s + (c.fee||0), 0);
+  const partialCnt = cases.filter(c => c.paid === '일부수납').length;
+  const unpaidCnt = cases.filter(c => c.paid === '미수납').length;
+  document.getElementById('fee-total').textContent = total + '만';
+  document.getElementById('fee-paid').textContent = paid + '만';
+  document.getElementById('fee-partial').textContent = partial + '만';
+  document.getElementById('fee-unpaid').textContent = unpaid + '만';
+  document.getElementById('fee-paid-pct').textContent = total ? '수납률 ' + Math.round(paid/total*100) + '%' : '수납률 0%';
+  document.getElementById('fee-partial-cnt').textContent = partialCnt + '건';
+  document.getElementById('fee-unpaid-cnt').textContent = unpaidCnt + '건';
+  if (total > 0) {
+    document.getElementById('bar-paid').style.width = Math.round(paid/total*100) + '%';
+    document.getElementById('bar-partial').style.width = Math.round(partial/total*100) + '%';
+    document.getElementById('bar-unpaid').style.width = Math.round(unpaid/total*100) + '%';
   }
-  tbody.innerHTML = filtered.map((c, i) => {
-    const av = avColors[i % 5];
+}
+
+function renderUnpaid() {
+  const unpaid = cases.filter(c => c.paid !== '완납');
+  const tbody = document.getElementById('unpaid-body');
+  if (!unpaid.length) { tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:24px;color:#aaa">미수납 사건 없음 🎉</td></tr>'; return; }
+  tbody.innerHTML = unpaid.map((c,i) => {
+    const pb = c.paid === '일부수납' ? 'badge-partial' : 'badge-unpaid';
+    return `<tr class="unpaid-row">
+      <td><strong>${c.name}</strong></td>
+      <td>${c.client||'-'}</td>
+      <td style="font-size:12px;color:#666">${c.phone||'-'}</td>
+      <td><span class="avatar ${avColors[i%5]}">${(c.lawyer||'?')[0]}</span>${c.lawyer||'-'}</td>
+      <td><strong>${c.fee||0}만원</strong></td>
+      <td><span class="badge ${pb}">${c.paid||'미수납'}</span></td>
+      <td><button class="action-btn" onclick="openEdit(${c.id})">✏️</button></td>
+    </tr>`;
+  }).join('');
+}
+
+function renderDeadlineTable() {
+  const today = new Date();
+  const sorted = cases
+    .filter(c => c.status !== '완료')
+    .map(c => ({ ...c, diff: c.deadline ? Math.ceil((new Date(c.deadline) - today) / 86400000) : 9999 }))
+    .sort((a,b) => a.diff - b.diff);
+  const d7 = sorted.filter(c => c.diff <= 7 && c.diff >= 0).length;
+  const d30 = sorted.filter(c => c.diff <= 30 && c.diff >= 0).length;
+  const noDeadline = cases.filter(c => !c.deadline && c.status !== '완료').length;
+  const done = cases.filter(c => c.status === '완료').length;
+  document.getElementById('d7-cnt').textContent = d7;
+  document.getElementById('d30-cnt').textContent = d30;
+  document.getElementById('no-deadline-cnt').textContent = noDeadline;
+  document.getElementById('done-cnt2').textContent = done;
+  const tbody = document.getElementById('deadline-body');
+  if (!cases.length) { tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:24px;color:#aaa">사건이 없습니다</td></tr>'; return; }
+  const allSorted = cases
+    .map(c => ({ ...c, diff: c.deadline ? Math.ceil((new Date(c.deadline) - today) / 86400000) : 9999 }))
+    .sort((a,b) => a.diff - b.diff);
+  tbody.innerHTML = allSorted.map((c,i) => {
     const badge = c.status === '완료' ? 'badge-done' : c.status === '진행중' ? 'badge-prog' : 'badge-wait';
     const dl = c.deadline ? c.deadline.substring(0,10) : '-';
+    let dday = '-';
+    let ddayStyle = 'color:#888';
+    if (c.deadline && c.diff !== 9999) {
+      if (c.diff < 0) { dday = '만료'; ddayStyle = 'color:#aaa'; }
+      else if (c.diff === 0) { dday = 'D-DAY'; ddayStyle = 'color:#E24B4A;font-weight:700'; }
+      else if (c.diff <= 7) { dday = 'D-' + c.diff; ddayStyle = 'color:#E24B4A;font-weight:700'; }
+      else if (c.diff <= 30) { dday = 'D-' + c.diff; ddayStyle = 'color:#854F0B;font-weight:600'; }
+      else { dday = 'D-' + c.diff; ddayStyle = 'color:#888'; }
+    }
     return `<tr>
       <td><strong>${c.name}</strong></td>
       <td>${c.client||'-'}</td>
+      <td><span class="avatar ${avColors[i%5]}">${(c.lawyer||'?')[0]}</span>${c.lawyer||'-'}</td>
+      <td><span class="badge ${badge}">${c.status}</span></td>
+      <td style="font-size:12px;color:#888">${dl}</td>
+      <td style="${ddayStyle}">${dday}</td>
+      <td><button class="action-btn" onclick="openEdit(${c.id})">✏️</button><button class="action-btn" onclick="deleteCase(${c.id})">🗑</button></td>
+    </tr>`;
+  }).join('');
+}
+
+function renderTable() {
+  const filtered = currentFilter === 'all' ? cases : cases.filter(c => c.status === currentFilter);
+  const tbody = document.getElementById('case-body');
+  if (!filtered.length) { tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;padding:24px;color:#aaa">사건이 없습니다</td></tr>'; return; }
+  tbody.innerHTML = filtered.map((c,i) => {
+    const av = avColors[i%5];
+    const badge = c.status === '완료' ? 'badge-done' : c.status === '진행중' ? 'badge-prog' : 'badge-wait';
+    const pb = c.paid === '완납' ? 'badge-paid' : c.paid === '일부수납' ? 'badge-partial' : 'badge-unpaid';
+    const dl = c.deadline ? c.deadline.substring(0,10) : '-';
+    return `<tr ${c.paid === '미수납' ? 'class="unpaid-row"' : ''}>
+      <td><strong>${c.name}</strong>${c.case_type ? `<br><span style="font-size:11px;color:#aaa">${c.case_type}</span>` : ''}</td>
+      <td>${c.client||'-'}</td>
+      <td style="font-size:12px;color:#666">${c.phone||'-'}</td>
       <td><span class="avatar ${av}">${(c.lawyer||'?')[0]}</span>${c.lawyer||'-'}</td>
       <td><span class="badge ${badge}">${c.status}</span></td>
       <td>${c.fee||0}만원</td>
+      <td><span class="badge ${pb}">${c.paid||'미수납'}</span></td>
       <td style="color:#888;font-size:12px">${dl}</td>
-      <td><button onclick="deleteCase(${c.id})" style="background:none;border:none;color:#ccc;cursor:pointer;font-size:16px">🗑</button></td>
+      <td><button class="action-btn" onclick="openEdit(${c.id})">✏️</button><button class="action-btn" onclick="deleteCase(${c.id})">🗑</button></td>
     </tr>`;
   }).join('');
 }
 
 function renderDeadlines() {
   const today = new Date();
-  const upcoming = cases
-    .filter(c => c.deadline && c.status !== '완료')
-    .map(c => ({ ...c, diff: Math.ceil((new Date(c.deadline) - today) / 86400000) }))
-    .filter(c => c.diff >= 0)
-    .sort((a,b) => a.diff - b.diff)
-    .slice(0, 5);
+  const upcoming = cases.filter(c => c.deadline && c.status !== '완료').map(c => ({ ...c, diff: Math.ceil((new Date(c.deadline) - today) / 86400000) })).filter(c => c.diff >= 0).sort((a,b) => a.diff - b.diff).slice(0,5);
   const el = document.getElementById('deadline-list');
   if (!upcoming.length) { el.innerHTML = '<div style="color:#aaa;font-size:12px;padding:8px 0">마감 임박 사건 없음</div>'; return; }
-  el.innerHTML = upcoming.map(c =>
-    `<div class="deadline-item"><span>${c.name}</span><span class="${c.diff <= 7 ? 'urgent' : ''}" style="color:${c.diff > 7 ? '#888' : ''}">D-${c.diff}</span></div>`
-  ).join('');
+  el.innerHTML = upcoming.map(c => `<div class="deadline-item"><span>${c.name}</span><span class="${c.diff <= 7 ? 'urgent' : ''}" style="${c.diff > 7 ? 'color:#888' : ''}">D-${c.diff}</span></div>`).join('');
 }
 
 function renderBars() {
@@ -261,43 +464,73 @@ function renderBars() {
   const colors = ['#1e2d45','#c9a84c','#0F6E56','#A32D2D','#3C3489'];
   const el = document.getElementById('lawyer-bars');
   if (!Object.keys(counts).length) { el.innerHTML = '<div style="color:#aaa;font-size:12px">데이터 없음</div>'; return; }
-  el.innerHTML = Object.entries(counts).map(([name,n],i) =>
-    `<div class="bar-row">
-      <div class="bar-label"><span>${name}</span><span>${n}건</span></div>
-      <div class="bar-track"><div class="bar-fill" style="width:${Math.round(n/max*100)}%;background:${colors[i%5]}"></div></div>
-    </div>`
-  ).join('');
+  el.innerHTML = Object.entries(counts).map(([name,n],i) => `<div class="bar-row"><div class="bar-label"><span>${name}</span><span>${n}건</span></div><div class="bar-track"><div class="bar-fill" style="width:${Math.round(n/max*100)}%;background:${colors[i%5]}"></div></div></div>`).join('');
 }
 
 function filterCases(f) {
   currentFilter = f;
-  document.querySelectorAll('.filter-btn').forEach((btn, i) => {
-    btn.classList.toggle('active', ['all','진행중','완료','대기'][i] === f);
-  });
+  document.querySelectorAll('.filter-btn').forEach((btn,i) => { btn.classList.toggle('active', ['all','진행중','완료','대기'][i] === f); });
   renderTable();
 }
 
-function openModal() { document.getElementById('modal').classList.add('open'); }
+function openModal() {
+  editId = null;
+  document.getElementById('modal-title').textContent = '사건 추가';
+  ['f-name','f-client','f-phone','f-lawyer','f-memo'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('f-fee').value = '';
+  document.getElementById('f-deadline').value = '';
+  document.getElementById('f-status').value = '진행중';
+  document.getElementById('f-paid').value = '미수납';
+  document.getElementById('f-type').value = '';
+  document.getElementById('modal').classList.add('open');
+}
+
+function openEdit(id) {
+  const c = cases.find(x => x.id === id);
+  if (!c) return;
+  editId = id;
+  document.getElementById('modal-title').textContent = '사건 수정';
+  document.getElementById('f-name').value = c.name||'';
+  document.getElementById('f-client').value = c.client||'';
+  document.getElementById('f-phone').value = c.phone||'';
+  document.getElementById('f-lawyer').value = c.lawyer||'';
+  document.getElementById('f-status').value = c.status||'진행중';
+  document.getElementById('f-fee').value = c.fee||'';
+  document.getElementById('f-paid').value = c.paid||'미수납';
+  document.getElementById('f-deadline').value = c.deadline ? c.deadline.substring(0,10) : '';
+  document.getElementById('f-memo').value = c.memo||'';
+  document.getElementById('f-type').value = c.case_type||'';
+  document.getElementById('modal').classList.add('open');
+}
+
 function closeModal() { document.getElementById('modal').classList.remove('open'); }
 
 async function saveCase() {
   const body = {
     name: document.getElementById('f-name').value,
     client: document.getElementById('f-client').value,
+    phone: document.getElementById('f-phone').value,
     lawyer: document.getElementById('f-lawyer').value,
     status: document.getElementById('f-status').value,
-    fee: parseInt(document.getElementById('f-fee').value) || 0,
-    deadline: document.getElementById('f-deadline').value || null,
+    fee: parseInt(document.getElementById('f-fee').value)||0,
+    paid: document.getElementById('f-paid').value,
+    deadline: document.getElementById('f-deadline').value||null,
+    memo: document.getElementById('f-memo').value,
+    case_type: document.getElementById('f-type').value,
   };
   if (!body.name) { alert('사건명을 입력해주세요'); return; }
-  await fetch(API, { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(body) });
+  if (editId) {
+    await fetch(API+'/'+editId, { method: 'PUT', headers: {'Content-Type':'application/json'}, body: JSON.stringify(body) });
+  } else {
+    await fetch(API, { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(body) });
+  }
   closeModal();
   loadCases();
 }
 
 async function deleteCase(id) {
   if (!confirm('삭제하시겠습니까?')) return;
-  await fetch(API + '/' + id, { method: 'DELETE' });
+  await fetch(API+'/'+id, { method: 'DELETE' });
   loadCases();
 }
 
