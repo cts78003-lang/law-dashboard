@@ -1,70 +1,367 @@
-const express = require('express');
-const mysql = require('mysql2');
-const cors = require('cors');
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>법무사무소 관리 시스템</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Noto Sans KR', sans-serif; }
+body { background: #f0f2f5; min-height: 100vh; }
+:root { --navy: #1e2d45; --gold: #c9a84c; --gold-light: #f0d080; }
+.wrap { max-width: 1100px; margin: 0 auto; padding: 24px 16px; }
+.header { background: var(--navy); border-radius: 12px; padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+.header-left { display: flex; align-items: center; gap: 14px; }
+.logo { width: 38px; height: 38px; background: var(--gold); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+.header-title { color: #f5f0e8; font-size: 17px; font-weight: 700; }
+.header-sub { color: #a8b8cc; font-size: 12px; margin-top: 2px; }
+.date { border: 1px solid var(--gold); color: var(--gold-light); border-radius: 20px; padding: 4px 14px; font-size: 12px; }
+.stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px; }
+.stat-card { background: #fff; border-radius: 10px; padding: 16px 18px; cursor: pointer; border: 1.5px solid #e8e8e8; transition: border-color 0.15s; }
+.stat-card:hover { border-color: var(--gold); }
+.stat-label { font-size: 12px; color: #888; margin-bottom: 6px; }
+.stat-num { font-size: 28px; font-weight: 700; color: #1e2d45; }
+.stat-num.gold { color: var(--gold); }
+.stat-desc { font-size: 11px; color: #aaa; margin-top: 4px; }
+.section-header { background: var(--navy); border-radius: 8px; padding: 10px 18px; color: #f5f0e8; font-size: 14px; font-weight: 600; margin-bottom: 10px; }
+.filter-row { display: flex; gap: 8px; margin-bottom: 12px; }
+.filter-btn { background: #fff; border: 1.5px solid #ddd; border-radius: 20px; padding: 5px 16px; font-size: 13px; cursor: pointer; transition: all 0.15s; }
+.filter-btn.active { background: var(--navy); color: var(--gold-light); border-color: var(--navy); }
+.table-wrap { background: #fff; border-radius: 12px; overflow: hidden; border: 1px solid #e8e8e8; margin-bottom: 16px; }
+table { width: 100%; border-collapse: collapse; }
+thead tr { background: #f7f8fa; }
+th { padding: 10px 16px; text-align: left; font-size: 12px; color: #888; border-bottom: 1px solid #eee; font-weight: 600; }
+td { padding: 12px 16px; font-size: 13px; border-bottom: 1px solid #f0f0f0; color: #222; }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: #fafbfc; }
+.badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; }
+.badge-prog { background: #E6F1FB; color: #185FA5; }
+.badge-done { background: #EAF3DE; color: #3B6D11; }
+.badge-wait { background: #FAEEDA; color: #854F0B; }
+.avatar { width: 26px; height: 26px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; margin-right: 5px; vertical-align: middle; }
+.av1 { background: #1e2d45; color: #f0d080; } .av2 { background: #8B6914; color: #fdf3dc; } .av3 { background: #0F6E56; color: #9FE1CB; } .av4 { background: #A32D2D; color: #F7C1C1; } .av5 { background: #3C3489; color: #CECBF6; }
+.bottom-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.mini-card { background: #fff; border-radius: 12px; padding: 16px 18px; border: 1px solid #e8e8e8; }
+.mini-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; color: #1e2d45; }
+.deadline-item { display: flex; justify-content: space-between; padding: 7px 0; border-bottom: 1px solid #f0f0f0; font-size: 12px; }
+.deadline-item:last-child { border-bottom: none; }
+.urgent { color: #E24B4A; font-weight: 700; }
+.bar-row { margin-bottom: 10px; }
+.bar-label { display: flex; justify-content: space-between; font-size: 12px; color: #666; margin-bottom: 4px; }
+.bar-track { height: 8px; background: #f0f0f0; border-radius: 4px; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 4px; }
+.add-btn { background: var(--gold); color: var(--navy); border: none; border-radius: 8px; padding: 8px 18px; font-size: 13px; font-weight: 700; cursor: pointer; margin-bottom: 12px; }
+.add-btn:hover { background: var(--gold-light); }
+.modal-bg { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 100; align-items: center; justify-content: center; }
+.modal-bg.open { display: flex; }
+.modal { background: #fff; border-radius: 14px; padding: 28px; width: 440px; max-width: 95vw; }
+.modal h3 { font-size: 16px; color: var(--navy); margin-bottom: 20px; font-weight: 700; }
+.form-row { margin-bottom: 14px; }
+.form-row label { display: block; font-size: 12px; color: #666; margin-bottom: 5px; }
+.form-row input, .form-row select, .form-row textarea { width: 100%; border: 1.5px solid #ddd; border-radius: 7px; padding: 8px 12px; font-size: 13px; outline: none; font-family: inherit; }
+.form-row input:focus, .form-row select:focus, .form-row textarea:focus { border-color: var(--gold); }
+.form-row textarea { resize: vertical; min-height: 70px; }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.modal-btns { display: flex; gap: 8px; margin-top: 20px; }
+.btn-cancel { flex: 1; background: #f0f0f0; border: none; border-radius: 8px; padding: 10px; font-size: 13px; cursor: pointer; }
+.btn-save { flex: 2; background: var(--navy); color: var(--gold-light); border: none; border-radius: 8px; padding: 10px; font-size: 13px; font-weight: 700; cursor: pointer; }
+.action-btn { background: none; border: none; cursor: pointer; font-size: 15px; padding: 2px 4px; }
+.fee-paid { font-size: 11px; color: #3B6D11; background: #EAF3DE; border-radius: 4px; padding: 2px 6px; margin-left: 4px; }
+.fee-unpaid { font-size: 11px; color: #854F0B; background: #FAEEDA; border-radius: 4px; padding: 2px 6px; margin-left: 4px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="header">
+    <div class="header-left">
+      <div class="logo">⚖️</div>
+      <div>
+        <div class="header-title">법무사무소 관리 시스템</div>
+        <div class="header-sub">사건 · 의뢰인 · 수임료 통합 관리</div>
+      </div>
+    </div>
+    <div class="date" id="today"></div>
+  </div>
 
-const app = express();
-app.use(cors());
-app.use(express.json());
-app.use(express.static('public'));
+  <div class="stat-grid">
+    <div class="stat-card" onclick="filterCases('all')">
+      <div class="stat-label">📁 전체 사건</div>
+      <div class="stat-num" id="cnt-all">0</div>
+      <div class="stat-desc">등록된 사건 수</div>
+    </div>
+    <div class="stat-card" onclick="filterCases('진행중')">
+      <div class="stat-label">⏳ 진행중</div>
+      <div class="stat-num" id="cnt-prog">0</div>
+      <div class="stat-desc" id="pct-prog">-</div>
+    </div>
+    <div class="stat-card" onclick="filterCases('완료')">
+      <div class="stat-label">✅ 완료</div>
+      <div class="stat-num" id="cnt-done">0</div>
+      <div class="stat-desc">완료 사건</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">💰 총 수임료</div>
+      <div class="stat-num gold" id="total-fee">0만</div>
+      <div class="stat-desc" id="unpaid-fee">미수금: 0만원</div>
+    </div>
+  </div>
 
-const db = mysql.createConnection({
-  host: process.env.MYSQLHOST,
-  port: process.env.MYSQLPORT,
-  user: process.env.MYSQLUSER,
-  password: process.env.MYSQLPASSWORD,
-  database: process.env.MYSQLDATABASE,
-});
+  <div class="section-header">📋 사건 목록 &amp; 현황</div>
+  <div class="filter-row">
+    <button class="filter-btn active" onclick="filterCases('all')">전체 <span id="fb-all">0</span></button>
+    <button class="filter-btn" onclick="filterCases('진행중')">진행중 <span id="fb-prog">0</span></button>
+    <button class="filter-btn" onclick="filterCases('완료')">완료 <span id="fb-done">0</span></button>
+    <button class="filter-btn" onclick="filterCases('대기')">대기 <span id="fb-wait">0</span></button>
+  </div>
+  <button class="add-btn" onclick="openModal()">+ 사건 추가</button>
 
-db.connect((err) => {
-  if (err) {
-    console.error('DB 연결 실패:', err.message);
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>사건명</th><th>의뢰인</th><th>연락처</th><th>담당자</th><th>상태</th><th>수임료</th><th>마감일</th><th>관리</th>
+        </tr>
+      </thead>
+      <tbody id="case-body"></tbody>
+    </table>
+  </div>
+
+  <div class="bottom-grid">
+    <div class="mini-card">
+      <div class="mini-title">📅 마감 임박 사건</div>
+      <div id="deadline-list"></div>
+    </div>
+    <div class="mini-card">
+      <div class="mini-title">📊 담당자별 현황</div>
+      <div id="lawyer-bars"></div>
+    </div>
+  </div>
+</div>
+
+<!-- 사건 추가/수정 모달 -->
+<div class="modal-bg" id="modal">
+  <div class="modal">
+    <h3 id="modal-title">사건 추가</h3>
+    <div class="form-grid">
+      <div class="form-row"><label>사건명 *</label><input id="f-name" placeholder="예: 교통사고 손해배상"></div>
+      <div class="form-row"><label>사건 유형</label>
+        <select id="f-type">
+          <option value="">선택</option>
+          <option value="민사">민사</option>
+          <option value="형사">형사</option>
+          <option value="가사">가사</option>
+          <option value="행정">행정</option>
+          <option value="기타">기타</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-grid">
+      <div class="form-row"><label>의뢰인 *</label><input id="f-client" placeholder="예: 홍길동"></div>
+      <div class="form-row"><label>의뢰인 연락처</label><input id="f-phone" placeholder="010-0000-0000"></div>
+    </div>
+    <div class="form-grid">
+      <div class="form-row"><label>담당자</label><input id="f-lawyer" placeholder="예: 김태준 대표변호사"></div>
+      <div class="form-row"><label>상태</label>
+        <select id="f-status">
+          <option value="진행중">진행중</option>
+          <option value="완료">완료</option>
+          <option value="대기">대기</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-grid">
+      <div class="form-row"><label>수임료 (만원)</label><input id="f-fee" type="number" placeholder="예: 50"></div>
+      <div class="form-row"><label>수납 여부</label>
+        <select id="f-paid">
+          <option value="미수납">미수납</option>
+          <option value="일부수납">일부수납</option>
+          <option value="완납">완납</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row"><label>마감일</label><input id="f-deadline" type="date"></div>
+    <div class="form-row"><label>메모</label><textarea id="f-memo" placeholder="진행 상황, 특이사항 등"></textarea></div>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal()">취소</button>
+      <button class="btn-save" onclick="saveCase()">저장</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const API = '/api/cases';
+let cases = [];
+let currentFilter = 'all';
+let editId = null;
+const avColors = ['av1','av2','av3','av4','av5'];
+
+function setDate() {
+  const d = new Date();
+  document.getElementById('today').textContent = `${d.getFullYear()}년 ${d.getMonth()+1}월 ${d.getDate()}일`;
+}
+
+async function loadCases() {
+  const res = await fetch(API);
+  cases = await res.json();
+  render();
+}
+
+function render() {
+  updateStats();
+  renderTable();
+  renderDeadlines();
+  renderBars();
+}
+
+function updateStats() {
+  const total = cases.length;
+  const prog = cases.filter(c => c.status === '진행중').length;
+  const done = cases.filter(c => c.status === '완료').length;
+  const wait = cases.filter(c => c.status === '대기').length;
+  const totalFee = cases.reduce((s,c) => s + (c.fee||0), 0);
+  const unpaid = cases.filter(c => c.paid !== '완납').reduce((s,c) => s + (c.fee||0), 0);
+
+  document.getElementById('cnt-all').textContent = total;
+  document.getElementById('cnt-prog').textContent = prog;
+  document.getElementById('cnt-done').textContent = done;
+  document.getElementById('pct-prog').textContent = total ? Math.round(prog/total*100) + '% 진행 비율' : '-';
+  document.getElementById('total-fee').textContent = totalFee + '만';
+  document.getElementById('unpaid-fee').textContent = '미수금: ' + unpaid + '만원';
+  document.getElementById('fb-all').textContent = total;
+  document.getElementById('fb-prog').textContent = prog;
+  document.getElementById('fb-done').textContent = done;
+  document.getElementById('fb-wait').textContent = wait;
+}
+
+function renderTable() {
+  const filtered = currentFilter === 'all' ? cases : cases.filter(c => c.status === currentFilter);
+  const tbody = document.getElementById('case-body');
+  if (!filtered.length) {
+    tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:24px;color:#aaa">사건이 없습니다</td></tr>';
     return;
   }
-  console.log('DB 연결 성공');
+  tbody.innerHTML = filtered.map((c, i) => {
+    const av = avColors[i % 5];
+    const badge = c.status === '완료' ? 'badge-done' : c.status === '진행중' ? 'badge-prog' : 'badge-wait';
+    const dl = c.deadline ? c.deadline.substring(0,10) : '-';
+    const paidBadge = c.paid === '완납' ? `<span class="fee-paid">완납</span>` : c.paid === '일부수납' ? `<span class="fee-unpaid">일부</span>` : `<span class="fee-unpaid">미수납</span>`;
+    return `<tr>
+      <td><strong>${c.name}</strong>${c.case_type ? `<br><span style="font-size:11px;color:#aaa">${c.case_type}</span>` : ''}</td>
+      <td>${c.client||'-'}</td>
+      <td style="font-size:12px;color:#666">${c.phone||'-'}</td>
+      <td><span class="avatar ${av}">${(c.lawyer||'?')[0]}</span>${c.lawyer||'-'}</td>
+      <td><span class="badge ${badge}">${c.status}</span></td>
+      <td>${c.fee||0}만원${paidBadge}</td>
+      <td style="color:#888;font-size:12px">${dl}</td>
+      <td>
+        <button class="action-btn" onclick="openEdit(${c.id})" title="수정">✏️</button>
+        <button class="action-btn" onclick="deleteCase(${c.id})" title="삭제">🗑</button>
+      </td>
+    </tr>`;
+  }).join('');
+}
 
-  db.query(`
-    CREATE TABLE IF NOT EXISTS cases (
-      id INT AUTO_INCREMENT PRIMARY KEY,
-      name VARCHAR(100),
-      client VARCHAR(50),
-      lawyer VARCHAR(50),
-      status ENUM('진행중','완료','대기') DEFAULT '진행중',
-      fee INT DEFAULT 0,
-      deadline DATE,
-      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    )
-  `, (err) => {
-    if (err) console.error('테이블 생성 실패:', err.message);
-    else console.log('테이블 준비 완료');
+function renderDeadlines() {
+  const today = new Date();
+  const upcoming = cases
+    .filter(c => c.deadline && c.status !== '완료')
+    .map(c => ({ ...c, diff: Math.ceil((new Date(c.deadline) - today) / 86400000) }))
+    .filter(c => c.diff >= 0)
+    .sort((a,b) => a.diff - b.diff)
+    .slice(0, 5);
+  const el = document.getElementById('deadline-list');
+  if (!upcoming.length) { el.innerHTML = '<div style="color:#aaa;font-size:12px;padding:8px 0">마감 임박 사건 없음</div>'; return; }
+  el.innerHTML = upcoming.map(c =>
+    `<div class="deadline-item"><span>${c.name}</span><span class="${c.diff <= 7 ? 'urgent' : ''}" style="${c.diff > 7 ? 'color:#888' : ''}">D-${c.diff}</span></div>`
+  ).join('');
+}
+
+function renderBars() {
+  const counts = {};
+  cases.forEach(c => { if(c.lawyer) counts[c.lawyer] = (counts[c.lawyer]||0) + 1; });
+  const max = Math.max(...Object.values(counts), 1);
+  const colors = ['#1e2d45','#c9a84c','#0F6E56','#A32D2D','#3C3489'];
+  const el = document.getElementById('lawyer-bars');
+  if (!Object.keys(counts).length) { el.innerHTML = '<div style="color:#aaa;font-size:12px">데이터 없음</div>'; return; }
+  el.innerHTML = Object.entries(counts).map(([name,n],i) =>
+    `<div class="bar-row">
+      <div class="bar-label"><span>${name}</span><span>${n}건</span></div>
+      <div class="bar-track"><div class="bar-fill" style="width:${Math.round(n/max*100)}%;background:${colors[i%5]}"></div></div>
+    </div>`
+  ).join('');
+}
+
+function filterCases(f) {
+  currentFilter = f;
+  document.querySelectorAll('.filter-btn').forEach((btn, i) => {
+    btn.classList.toggle('active', ['all','진행중','완료','대기'][i] === f);
   });
-});
+  renderTable();
+}
 
-app.get('/api/cases', (req, res) => {
- db.query('SELECT * FROM cases ORDER BY id DESC' , (err, results) => {
-    if (err) return res.status(500).json({ error: err.message });
-    res.json(results);
-  });
-});
+function openModal() {
+  editId = null;
+  document.getElementById('modal-title').textContent = '사건 추가';
+  ['f-name','f-client','f-phone','f-lawyer','f-memo'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('f-fee').value = '';
+  document.getElementById('f-deadline').value = '';
+  document.getElementById('f-status').value = '진행중';
+  document.getElementById('f-paid').value = '미수납';
+  document.getElementById('f-type').value = '';
+  document.getElementById('modal').classList.add('open');
+}
 
-app.post('/api/cases', (req, res) => {
-  const { name, client, lawyer, status, fee, deadline } = req.body;
-  db.query(
-    'INSERT INTO cases (name, client, lawyer, status, fee, deadline) VALUES (?,?,?,?,?,?)',
-    [name, client, lawyer, status, fee, deadline],
-    (err, result) => {
-      if (err) return res.status(500).json({ error: err.message });
-      res.json({ id: result.insertId });
-    }
-  );
-});
+function openEdit(id) {
+  const c = cases.find(x => x.id === id);
+  if (!c) return;
+  editId = id;
+  document.getElementById('modal-title').textContent = '사건 수정';
+  document.getElementById('f-name').value = c.name || '';
+  document.getElementById('f-client').value = c.client || '';
+  document.getElementById('f-phone').value = c.phone || '';
+  document.getElementById('f-lawyer').value = c.lawyer || '';
+  document.getElementById('f-status').value = c.status || '진행중';
+  document.getElementById('f-fee').value = c.fee || '';
+  document.getElementById('f-paid').value = c.paid || '미수납';
+  document.getElementById('f-deadline').value = c.deadline ? c.deadline.substring(0,10) : '';
+  document.getElementById('f-memo').value = c.memo || '';
+  document.getElementById('f-type').value = c.case_type || '';
+  document.getElementById('modal').classList.add('open');
+}
 
-app.delete('/api/cases/:id', (req, res) => {
-  db.query('DELETE FROM cases WHERE id=?', [req.params.id], (err) => {
-    if (err) return res.status(500).json({ error: err.message });
-    res.json({ ok: true });
-  });
-});
+function closeModal() { document.getElementById('modal').classList.remove('open'); }
 
-app.listen(process.env.PORT || 3000, () => {
-  console.log('Server running');
-});
+async function saveCase() {
+  const body = {
+    name: document.getElementById('f-name').value,
+    client: document.getElementById('f-client').value,
+    phone: document.getElementById('f-phone').value,
+    lawyer: document.getElementById('f-lawyer').value,
+    status: document.getElementById('f-status').value,
+    fee: parseInt(document.getElementById('f-fee').value) || 0,
+    paid: document.getElementById('f-paid').value,
+    deadline: document.getElementById('f-deadline').value || null,
+    memo: document.getElementById('f-memo').value,
+    case_type: document.getElementById('f-type').value,
+  };
+  if (!body.name) { alert('사건명을 입력해주세요'); return; }
+
+  if (editId) {
+    await fetch(API + '/' + editId, { method: 'PUT', headers: {'Content-Type':'application/json'}, body: JSON.stringify(body) });
+  } else {
+    await fetch(API, { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(body) });
+  }
+  closeModal();
+  loadCases();
+}
+
+async function deleteCase(id) {
+  if (!confirm('삭제하시겠습니까?')) return;
+  await fetch(API + '/' + id, { method: 'DELETE' });
+  loadCases();
+}
+
+setDate();
+loadCases();
+</script>
+</body>
+</html>
