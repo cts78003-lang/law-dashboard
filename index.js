@@ -1,10 +1,26 @@
 const express = require('express');
 const mysql = require('mysql2');
 const cors = require('cors');
+const session = require('express-session');
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'lawfirm-secret-2026',
+  resave: false,
+  saveUninitialized: false,
+  cookie: { maxAge: 1000 * 60 * 60 * 8 }
+}));
+
+const ADMIN_ID = process.env.ADMIN_ID || 'admin';
+const ADMIN_PW = process.env.ADMIN_PW || 'law1234';
+
+function requireLogin(req, res, next) {
+  if (req.session && req.session.loggedIn) return next();
+  res.status(401).json({ error: 'unauthorized' });
+}
+
 app.use(express.static('public'));
 
 const db = mysql.createConnection({
@@ -16,12 +32,8 @@ const db = mysql.createConnection({
 });
 
 db.connect((err) => {
-  if (err) {
-    console.error('DB 연결 실패:', err.message);
-    return;
-  }
+  if (err) { console.error('DB 연결 실패:', err.message); return; }
   console.log('DB 연결 성공');
-
   db.query(`
     CREATE TABLE IF NOT EXISTS cases (
       id INT AUTO_INCREMENT PRIMARY KEY,
@@ -43,14 +55,33 @@ db.connect((err) => {
   });
 });
 
-app.get('/api/cases', (req, res) => {
+app.post('/api/login', (req, res) => {
+  const { id, password } = req.body;
+  if (id === ADMIN_ID && password === ADMIN_PW) {
+    req.session.loggedIn = true;
+    res.json({ ok: true });
+  } else {
+    res.status(401).json({ error: '아이디 또는 비밀번호가 틀렸습니다' });
+  }
+});
+
+app.post('/api/logout', (req, res) => {
+  req.session.destroy();
+  res.json({ ok: true });
+});
+
+app.get('/api/me', (req, res) => {
+  res.json({ loggedIn: !!(req.session && req.session.loggedIn) });
+});
+
+app.get('/api/cases', requireLogin, (req, res) => {
   db.query('SELECT * FROM cases ORDER BY id DESC', (err, results) => {
     if (err) return res.status(500).json({ error: err.message });
     res.json(results);
   });
 });
 
-app.post('/api/cases', (req, res) => {
+app.post('/api/cases', requireLogin, (req, res) => {
   const { name, case_type, client, phone, lawyer, status, fee, paid, deadline, memo } = req.body;
   db.query(
     'INSERT INTO cases (name, case_type, client, phone, lawyer, status, fee, paid, deadline, memo) VALUES (?,?,?,?,?,?,?,?,?,?)',
@@ -62,7 +93,7 @@ app.post('/api/cases', (req, res) => {
   );
 });
 
-app.put('/api/cases/:id', (req, res) => {
+app.put('/api/cases/:id', requireLogin, (req, res) => {
   const { name, case_type, client, phone, lawyer, status, fee, paid, deadline, memo } = req.body;
   db.query(
     'UPDATE cases SET name=?, case_type=?, client=?, phone=?, lawyer=?, status=?, fee=?, paid=?, deadline=?, memo=? WHERE id=?',
@@ -74,13 +105,11 @@ app.put('/api/cases/:id', (req, res) => {
   );
 });
 
-app.delete('/api/cases/:id', (req, res) => {
+app.delete('/api/cases/:id', requireLogin, (req, res) => {
   db.query('DELETE FROM cases WHERE id=?', [req.params.id], (err) => {
     if (err) return res.status(500).json({ error: err.message });
     res.json({ ok: true });
   });
 });
 
-app.listen(process.env.PORT || 3000, () => {
-  console.log('Server running');
-});
+app.listen(process.env.PORT || 3000, () => { console.log('Server running'); });
